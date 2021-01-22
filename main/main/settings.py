@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.flatpages',
     'ecomm',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -124,3 +125,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_DIR = BASE_DIR / 'static/'
+STATICFILES_DIRS = [STATIC_DIR]
+# STATIC_ROOT = BASE_DIR / 'static/'
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media/'
+
+
+CKEDITOR_UPLOAD_PATH = 'uploads/'
