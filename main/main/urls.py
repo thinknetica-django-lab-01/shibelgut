@@ -21,4 +21,6 @@ urlpatterns = [
     path('', include('ecomm.urls')),
     path('about/', include('django.contrib.flatpages.urls')),
     path('contacts/', include('django.contrib.flatpages.urls')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('/', include('django.contrib.flatpages.urls')),
 ]
