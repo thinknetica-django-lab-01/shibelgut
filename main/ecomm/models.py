@@ -33,13 +33,13 @@ class Good(models.Model):
     is_available = models.BooleanField(db_index=True)
     categories = models.ManyToManyField('Category', blank=True, related_name='goods')
 
-    def __str__(self):
-        return '{}'.format(self.name)
-
     def __init__(self, percent, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.__percentage = percent
         self.__order_percentage = None
+
+    def __str__(self):
+        return '{}'.format(self.name)
 
     @property
     def percentage(self):
