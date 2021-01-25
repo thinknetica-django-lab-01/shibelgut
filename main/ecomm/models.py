@@ -33,28 +33,28 @@ class Good(models.Model):
     is_available = models.BooleanField(db_index=True)
     categories = models.ManyToManyField('Category', blank=True, related_name='goods')
 
-    def __init__(self, percent, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.__percentage = percent
-        self.__order_percentage = None
+    # def __init__(self, percent, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.__percentage = percent
+    #     self.__order_percentage = None
 
     def __str__(self):
         return '{}'.format(self.name)
 
-    @property
-    def percentage(self):
-        return self.__percentage
-
-    @percentage.setter
-    def percentage(self, value):
-        self.__percentage = value
-        self.__order_percentage = None
-
-    @property
-    def order_percentage(self):
-        if self.__order_percentage is None:
-            self.__order_percentage = round((self.__percentage * self.price)/100, 2)
-        return self.__order_percentage
+    # @property
+    # def percentage(self):
+    #     return self.__percentage
+    #
+    # @percentage.setter
+    # def percentage(self, value):
+    #     self.__percentage = value
+    #     self.__order_percentage = None
+    #
+    # @property
+    # def order_percentage(self):
+    #     if self.__order_percentage is None:
+    #         self.__order_percentage = round((self.__percentage * self.price)/100, 2)
+    #     return self.__order_percentage
 
 
 class Customer(models.Model):
