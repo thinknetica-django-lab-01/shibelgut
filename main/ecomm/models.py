@@ -32,6 +32,7 @@ class Good(models.Model):
     brand = models.CharField(max_length=150, db_index=True)
     is_available = models.BooleanField(db_index=True)
     categories = models.ManyToManyField('Category', blank=True, related_name='goods')
+    shipping_charge = models.DecimalField(max_digits=7, decimal_places=2, db_index=True)
 
     # def __init__(self, percent, *args, **kwargs):
     #     super().__init__(*args, **kwargs)
