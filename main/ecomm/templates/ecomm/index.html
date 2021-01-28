@@ -1,15 +1,21 @@
 {% extends 'ecomm/base.html' %}
 
 {% block title %}
-
+    Main
 {% endblock %}
 
 {% block content %}
-    <h2 class="mb-5">Site works</h2>
-    <div>
-        <a class="" href="/about/">About us</a>
-    </div>
-    <div>
-        <a class="" href="/contacts/">Contacts</a>
-    </div>
+
+    <h3 class="mb-5">Site works</h3>
+
+    {% if turn_on_block %}
+        <div>
+            <a class="" href="/about/">About us</a>
+        </div>
+        <div>
+            <a class="" href="/contacts/">Contacts</a>
+        </div>
+    {% else %}
+    {% endif %}
+
 {% endblock %}
