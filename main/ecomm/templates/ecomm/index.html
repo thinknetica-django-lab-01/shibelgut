@@ -1,5 +1,7 @@
 {% extends 'ecomm/base.html' %}
 
+{% load ecomm_extras tz %}
+
 {% block title %}
     Main
 {% endblock %}
@@ -7,6 +9,11 @@
 {% block content %}
 
     <h3 class="mb-5">Site works</h3>
+
+    <div class="h4 mb-5">{{ simple_string|inverse }}</div>
+
+    {% current_time "%d-%m-%Y %H:%M" as the_time %}
+    <div class="h4 mb-5">The time is {{ the_time }}</div>
 
     {% if turn_on_block %}
         <div>
