@@ -17,10 +17,10 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('ecomm.urls')),
+    path('admin/', admin.site.urls, name='admin_url'),
+    path('', include('ecomm.urls'), name='main_url'),
     path('about/', include('django.contrib.flatpages.urls')),
     path('contacts/', include('django.contrib.flatpages.urls')),
     # path('ckeditor/', include('ckeditor_uploader.urls')),
-    path('/', include('django.contrib.flatpages.urls')),
+    path('/', include('django.contrib.flatpages.urls'), name='main_url'),
 ]

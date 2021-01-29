@@ -1,0 +1,23 @@
+{% extends 'ecomm/base.html' %}
+
+{% block title %}
+    Goods
+{% endblock %}
+
+{% block content %}
+    <h2 class="mb-5">Goods</h2>
+
+    {% if goods_list %}
+    <ul>
+        {% for goods in goods_list %}
+            <li><a class="" href="{{ goods.id }}/">{{ goods.name }}</a></li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>There are no goods in the shop.</p>
+    {% endif %}
+    <div>
+        <a class="" href="{% url 'main_url' %}">Main</a>
+    </div>
+
+{% endblock %}
