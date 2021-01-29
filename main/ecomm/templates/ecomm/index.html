@@ -15,6 +15,10 @@
     {% current_time "%d-%m-%Y %H:%M" as the_time %}
     <div class="h4 mb-5">The time is {{ the_time }}</div>
 
+    <div>
+        <a class="" href="{% url 'goods_list_url' %}">Goods</a>
+    </div>
+
     {% if turn_on_block %}
         <div>
             <a class="" href="/about/">About us</a>
