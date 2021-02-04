@@ -1,23 +1,75 @@
 {% extends 'ecomm/base.html' %}
 
+{% load ecomm_extras %}
+
 {% block title %}
     Goods
 {% endblock %}
 
 {% block content %}
-    <h2 class="mb-5">Goods</h2>
 
-    {% if goods_list %}
-    <ul>
-        {% for goods in goods_list %}
-            <li><a class="" href="{{ goods.id }}/">{{ goods.name }}</a></li>
-        {% endfor %}
-    </ul>
-    {% else %}
-        <p>There are no goods in the shop.</p>
-    {% endif %}
-    <div>
-        <a class="" href="{% url 'main_url' %}">Main</a>
+    <div class="container">
+        <div>
+            <a class="mb-5" href="{% url 'main_url' %}">Main</a>
+        </div>
+        {% if tag_search %}
+            <div>
+                <a class="mb-5" href="{% url 'goods_list_url' %}">Goods</a>
+            </div>
+            <div>
+                <h2 class="mb-5">Goods with the tag '{{ tag_search }}'</h2>
+            </div>
+        {% else %}
+            <div>
+                <a class="mb-5" href="{% url 'goods_list_url' %}">Goods</a>
+            </div>
+        {% endif %}
+
+        {% if page_object %}
+            <div class="row justify-content-md-center">
+                <div class="col-8">
+                    <ul>
+                        {% for goods in page_object.object_list %}
+                            <li><a class="" href="{{ goods.id }}/">{{ goods.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    {% if is_paginated %}
+                        <nav aria-label="...">
+                            <ul class="pagination">
+                                <li class="page-item {% if not prev_url %} disabled {% endif %}">
+                                    <a class="page-link" href="{{ prev_url }}" tabindex="-1" aria-disabled="true">Previous</a>
+                                </li>
+
+                                {% for n in page_object.paginator.page_range %}
+                                    {% if page_object.number == n %}
+                                        <li class="page-item active" aria-current="page">
+                                            <a class="page-link" href="?page={{ n }}">{{ n }}</a>
+                                        </li>
+                                    {% elif n > page_object.number|add:-3 and n < page_object.number|add:3 %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ n }}">{{ n }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                <li class="page-item {% if not next_url %} disabled {% endif %}">
+                                    <a class="page-link" href="{{ next_url }}" tabindex="-1" aria-disabled="true">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    {% endif %}
+                </div>
+                <div class="col-md-auto">
+                </div>
+                <div class="col">
+                    <h5 class="mb-1">Tags</h5>
+                    {% for tag in tags_list %}
+                        <li><a class="" href="?tag={{ tag|lower|underscore }}">{{ tag|lower }}</a></li>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <p>There are no goods in the shop.</p>
+        {% endif %}
     </div>
-
 {% endblock %}
