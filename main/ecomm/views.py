@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
-from ecomm.models import Good, Tag
+from ecomm.models import Good, User
+from ecomm.forms import ProfileUserForm
 from django.core.paginator import Paginator
+from django.views.generic.edit import UpdateView
 
 
 def index(request):
-    turn_on_block = True
-    current_username = (request.user.username if request.user.is_authenticated else "Guest")
+    turn_on_block = False
+    current_username = request.user
     simple_string = 'Hello, world!'
     return render(request, 'ecomm/index.html', context={'turn_on_block': turn_on_block,
                                                         'current_username': current_username,
@@ -49,12 +51,15 @@ class GoodsListView(ListView):
         else:
             next_url = ''
 
+        current_username = self.request.user
+
         context = {
             'page_object': page,
             'tags_list': tags_list,
             'is_paginated': is_paginated,
             'next_url': next_url,
-            'prev_url': prev_url
+            'prev_url': prev_url,
+            'current_username': current_username,
         }
         return context
 
@@ -65,5 +70,27 @@ class GoodsDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['current_username'] = self.request.user
         context['goods_list'] = Good.objects.all()
         return context
+
+
+class ProfileUserUpdate(UpdateView):
+    model = User
+    form_class = ProfileUserForm
+    template_name = 'ecomm/profile_update.html'
+    success_url = '/accounts/profile/'
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfileUserUpdate, self).get_context_data(**kwargs)
+        context['current_username'] = self.request.user
+        return context
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def form_valid(self, form):
+        clean = form.cleaned_data
+        context = {}
+        return super(ProfileUserUpdate, self).form_valid(form)
+

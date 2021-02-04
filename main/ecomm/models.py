@@ -141,12 +141,12 @@ class Characteristic(models.Model):
 
 
 class User(models.Model):
-    nickname = models.CharField(default='default nickname', max_length=150, verbose_name='Ник', blank=False,
+    nickname = models.CharField(default='', max_length=150, verbose_name='Ник', blank=False,
                                 db_index=True)
     email = models.EmailField(max_length=254, verbose_name='Электронная почта', blank=False, unique=True)
     password = models.CharField(max_length=150, verbose_name='Пароль', blank=False)
-    first_name = models.CharField(max_length=150, verbose_name='Имя (по паспорту)', blank=False, db_index=True)
-    last_name = models.CharField(max_length=150, verbose_name='Фамилия (по паспорту)', blank=False, db_index=True)
+    first_name = models.CharField(max_length=150, verbose_name='Имя', blank=False, db_index=True)
+    last_name = models.CharField(max_length=150, verbose_name='Фамилия', blank=False, db_index=True)
     reg_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата регистрация')
     SELLER = 'S'
     CUSTOMER = 'C'
@@ -162,6 +162,9 @@ class User(models.Model):
 
     def __str__(self):
         return '{} {}'.format(self.first_name, self.last_name)
+
+    def get_absolute_url(self):
+        return reverse('user-detail', kwargs={'pk': self.pk})
 
     @property
     def full_name(self):

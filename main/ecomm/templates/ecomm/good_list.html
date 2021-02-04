@@ -9,19 +9,19 @@
 {% block content %}
 
     <div class="container">
-        <div>
-            <a class="mb-5" href="{% url 'main_url' %}">Main</a>
-        </div>
+{#        <div>#}
+{#            <a class="mb-5" href="{% url 'main_url' %}">Main</a>#}
+{#        </div>#}
         {% if tag_search %}
-            <div>
-                <a class="mb-5" href="{% url 'goods_list_url' %}">Goods</a>
-            </div>
+{#            <div>#}
+{#                <a class="mb-5" href="{% url 'goods_list_url' %}">Goods</a>#}
+{#            </div>#}
             <div>
                 <h2 class="mb-5">Goods with the tag '{{ tag_search }}'</h2>
             </div>
         {% else %}
             <div>
-                <a class="mb-5" href="{% url 'goods_list_url' %}">Goods</a>
+                <h2 class="text-left">Goods</h2>
             </div>
         {% endif %}
 
@@ -62,7 +62,7 @@
                 <div class="col-md-auto">
                 </div>
                 <div class="col">
-                    <h5 class="mb-1">Tags</h5>
+{#                    <h5 class="mb-1">Tags</h5>#}
                     {% for tag in tags_list %}
                         <li><a class="" href="?tag={{ tag|lower|underscore }}">{{ tag|lower }}</a></li>
                     {% endfor %}
