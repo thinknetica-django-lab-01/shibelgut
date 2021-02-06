@@ -18,6 +18,12 @@ def underscore(value):
     return value.replace(' ', '_')
 
 
+@register.filter
+@stringfilter
+def without_underscore(value):
+    return value.replace('_', ' ')
+
+
 @register.simple_tag
 def current_time(format_string):
     tz_tomsk = pytz.timezone('Asia/Tomsk')
