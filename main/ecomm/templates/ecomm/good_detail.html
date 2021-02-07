@@ -5,25 +5,37 @@
 {% endblock %}
 
 {% block content %}
-    <ul>
-        <li><p class="mb-5">Name: {{ goods.name }}</p></li>
-        <li><p class="mb-5">Price: {{ goods.price }} $</p></li>
-        <li><p class="mb-5">Description: {{ goods.description }}</p></li>
-        <li><p class="mb-5">Rating: {{ goods.rating }}</p></li>
-        <li><p class="mb-5">Brand: {{ goods.brand }}</p></li>
-        <li><p class="mb-5">Available: {{ goods.is_available|lower }}</p></li>
-        {% for category in goods.categories.all %}
-            <li><p class="mb-5">Category: {{ category.name|lower }}</p></li>
-        {%  endfor %}
-        <li><p class="mb-5">Shipping charge: {{ goods.shipping_charge }} $</p></li>
-    </ul>
 
-    <div>
-        <a class="" href="{% url 'goods_list_url' %}">Goods</a>
+{#    <div>#}
+{#        <a class="mb-5" href="{% url 'goods_list_url' %}">Goods</a>#}
+{#    </div>#}
+{#    <div>#}
+{#        <a class="mb-5" href="{% url 'main_url' %}">Main</a>#}
+{#    </div>#}
+    <div class="row justify-content-md-center">
+        <div class="col-8">
+            <ul>
+                <li><p class="mb-5">Title: {{ goods.title }}</p></li>
+                <li><p class="mb-5">Price: {{ goods.price }} $</p></li>
+                <li><p class="mb-5">Description: {{ goods.description }}</p></li>
+                <li><p class="mb-5">Brand: {{ goods.brand }}</p></li>
+                <li><p class="mb-5">Rating: {{ goods.rating }}</p></li>
+                {% if goods.issue_date %}
+                    <li><p class="mb-5">Issue date: {{ goods.issue_date }}</p></li>
+                {% else %}
+                {% endif %}
+                {% if goods.vendor_code != '' %}
+                    <li><p class="mb-5">Vendor code: {{ goods.vendor_code }}</p></li>
+                {% else %}
+                {% endif %}
+                <li><p class="mb-5">Available: {{ goods.is_available|lower }}</p></li>
+                <li><p class="mb-5">Tag: {{ goods.tag.title|lower }}</p></li>
+                {#        <li><p class="mb-5">Shipping charge: {{ goods.shipping_charge }} $</p></li>#}
+            </ul>
+        </div>
+        <div class="col-md-auto">
+        </div>
+        <div class="col">
+        </div>
     </div>
-
-    <div>
-        <a class="" href="{% url 'main_url' %}">Main</a>
-    </div>
-
 {% endblock %}

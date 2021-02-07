@@ -1,23 +1,86 @@
 {% extends 'ecomm/base.html' %}
 
+{% load ecomm_extras %}
+
 {% block title %}
     Goods
 {% endblock %}
 
 {% block content %}
-    <h2 class="mb-5">Goods</h2>
 
-    {% if goods_list %}
-    <ul>
-        {% for goods in goods_list %}
-            <li><a class="" href="{{ goods.id }}/">{{ goods.name }}</a></li>
-        {% endfor %}
-    </ul>
-    {% else %}
-        <p>There are no goods in the shop.</p>
-    {% endif %}
-    <div>
-        <a class="" href="{% url 'main_url' %}">Main</a>
+    <div class="container">
+        <div>
+            <a class="mb-5" href="{% url 'main_url' %}">Main</a>
+        </div>
+        {% if current_tag %}
+            <div>
+                <a class="mb-5" href="{% url 'goods_list_url' %}">Goods</a>
+            </div>
+            <div>
+                <h2 class="mb-5">Goods with the tag '{{ current_tag|without_underscore }}'</h2>
+            </div>
+        {% else %}
+            <div>
+                <h2 class="text-left">Goods</h2>
+            </div>
+        {% endif %}
+
+        {% if page_obj %}
+            <div class="row justify-content-md-center">
+                <div class="col-8">
+                    <ul>
+                        {% for good in page_obj.object_list %}
+                            <li><a class="" href="{{ good.id }}">{{ good.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    {% if is_paginated %}
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                {% if page_obj.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?tag={{ current_tag }}&page={{ page_obj.previous_page_number }}" tabindex="-1">Previous</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                                    </li>
+                                {% endif %}
+                                {% for page in page_obj.paginator.page_range %}
+                                    {% if page_obj.number == page %}
+                                        <li class="page-item active" aria-current="page">
+                                            <a class="page-link" href="?tag={{ current_tag }}&page={{ page }}">{{ page }}</a>
+                                        </li>
+                                    {% elif page > page_obj.number|add:-3 and page < page_obj.number|add:3 %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?tag={{ current_tag }}&page={{ page }}">{{ page }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if page_obj.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?tag={{ current_tag }}&page={{ page_obj.next_page_number }}" tabindex="-1">Next</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    {% endif %}
+                </div>
+                <div class="col-md-auto">
+
+                </div>
+                <div class="col">
+                    <h5 class="mb-1">Tags</h5>
+                    {% for tag in tags %}
+                        <li><a class="" href="?tag={{ tag|lower|underscore }}&page=1">{{ tag|lower }}</a></li>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <p>There are no goods in the shop.</p>
+        {% endif %}
     </div>
-
 {% endblock %}
