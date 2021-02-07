@@ -9,15 +9,15 @@
 {% block content %}
 
     <div class="container">
-{#        <div>#}
-{#            <a class="mb-5" href="{% url 'main_url' %}">Main</a>#}
-{#        </div>#}
-        {% if tag_search %}
-{#            <div>#}
-{#                <a class="mb-5" href="{% url 'goods_list_url' %}">Goods</a>#}
-{#            </div>#}
+        <div>
+            <a class="mb-5" href="{% url 'main_url' %}">Main</a>
+        </div>
+        {% if current_tag %}
             <div>
-                <h2 class="mb-5">Goods with the tag '{{ tag_search }}'</h2>
+                <a class="mb-5" href="{% url 'goods_list_url' %}">Goods</a>
+            </div>
+            <div>
+                <h2 class="mb-5">Goods with the tag '{{ current_tag|without_underscore }}'</h2>
             </div>
         {% else %}
             <div>
@@ -25,46 +25,57 @@
             </div>
         {% endif %}
 
-        {% if page_object %}
+        {% if page_obj %}
             <div class="row justify-content-md-center">
                 <div class="col-8">
                     <ul>
-                        {% for goods in page_object.object_list %}
-                            <li><a class="" href="{{ goods.id }}/">{{ goods.title }}</a></li>
+                        {% for good in page_obj.object_list %}
+                            <li><a class="" href="{{ good.id }}">{{ good.title }}</a></li>
                         {% endfor %}
                     </ul>
                     {% if is_paginated %}
-                        <nav aria-label="...">
+                        <nav aria-label="Page navigation">
                             <ul class="pagination">
-                                <li class="page-item {% if not prev_url %} disabled {% endif %}">
-                                    <a class="page-link" href="{{ prev_url }}" tabindex="-1" aria-disabled="true">Previous</a>
-                                </li>
-
-                                {% for n in page_object.paginator.page_range %}
-                                    {% if page_object.number == n %}
+                                {% if page_obj.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?tag={{ current_tag }}&page={{ page_obj.previous_page_number }}" tabindex="-1">Previous</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                                    </li>
+                                {% endif %}
+                                {% for page in page_obj.paginator.page_range %}
+                                    {% if page_obj.number == page %}
                                         <li class="page-item active" aria-current="page">
-                                            <a class="page-link" href="?page={{ n }}">{{ n }}</a>
+                                            <a class="page-link" href="?tag={{ current_tag }}&page={{ page }}">{{ page }}</a>
                                         </li>
-                                    {% elif n > page_object.number|add:-3 and n < page_object.number|add:3 %}
+                                    {% elif page > page_obj.number|add:-3 and page < page_obj.number|add:3 %}
                                         <li class="page-item">
-                                            <a class="page-link" href="?page={{ n }}">{{ n }}</a>
+                                            <a class="page-link" href="?tag={{ current_tag }}&page={{ page }}">{{ page }}</a>
                                         </li>
                                     {% endif %}
                                 {% endfor %}
-
-                                <li class="page-item {% if not next_url %} disabled {% endif %}">
-                                    <a class="page-link" href="{{ next_url }}" tabindex="-1" aria-disabled="true">Next</a>
-                                </li>
+                                {% if page_obj.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?tag={{ current_tag }}&page={{ page_obj.next_page_number }}" tabindex="-1">Next</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
+                                    </li>
+                                {% endif %}
                             </ul>
                         </nav>
                     {% endif %}
                 </div>
                 <div class="col-md-auto">
+
                 </div>
                 <div class="col">
-{#                    <h5 class="mb-1">Tags</h5>#}
-                    {% for tag in tags_list %}
-                        <li><a class="" href="?tag={{ tag|lower|underscore }}">{{ tag|lower }}</a></li>
+                    <h5 class="mb-1">Tags</h5>
+                    {% for tag in tags %}
+                        <li><a class="" href="?tag={{ tag|lower|underscore }}&page=1">{{ tag|lower }}</a></li>
                     {% endfor %}
                 </div>
             </div>
