@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
-from ecomm.models import Good
+from ecomm.models import Good, CustomUser
 from ecomm.forms import ProfileUserForm
 from django.views.generic.edit import UpdateView
 
@@ -27,6 +27,7 @@ class GoodsListView(ListView):
             tags_list.append(good.tag.title)
         context['tags'] = list(set(tags_list))
         context['current_tag'] = self.request.GET.get('tag') if self.request.GET.get('tag') else ''
+        context['current_username'] = self.request.user
 
         return context
 
@@ -43,9 +44,15 @@ class GoodsDetailView(DetailView):
     context_object_name = 'goods'
     queryset = Good.objects.all()
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['current_username'] = self.request.user
+
+        return context
+
 
 class ProfileUserUpdate(UpdateView):
-    model = User
+    model = CustomUser
     form_class = ProfileUserForm
     template_name = 'ecomm/profile_update.html'
     success_url = '/accounts/profile/'

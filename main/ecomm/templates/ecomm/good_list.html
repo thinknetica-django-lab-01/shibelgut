@@ -9,13 +9,7 @@
 {% block content %}
 
     <div class="container">
-        <div>
-            <a class="mb-5" href="{% url 'main_url' %}">Main</a>
-        </div>
         {% if current_tag %}
-            <div>
-                <a class="mb-5" href="{% url 'goods_list_url' %}">Goods</a>
-            </div>
             <div>
                 <h2 class="mb-5">Goods with the tag '{{ current_tag|without_underscore }}'</h2>
             </div>
