@@ -47,6 +47,21 @@ class ProfileUserForm(forms.ModelForm):
         pass
 
 
+class LoginForm(forms.ModelForm):
+
+    email = forms.EmailInput()
+    password = forms.CharField(widget=forms.PasswordInput)
+
+    class Meta:
+        model = User
+        fields = ['email', 'password']
+
+    # widgets = {
+    #     'email': forms.TextInput(attrs={'class': 'form-control'}),
+    #     'password': forms.PasswordInput(attrs={'class': 'form-control'}),
+    # }
+
+
 class GoodCreateForm(forms.ModelForm):
     validate_numeric = RegexValidator(regex='^[0-9]*$', message='Use only digits')
     validate_alpha = RegexValidator(regex='^[a-zA-Z]*$', message='Use only letters')

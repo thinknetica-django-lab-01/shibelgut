@@ -10,15 +10,9 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{% url 'main_url' %}">Main</a>
                     </li>
-                    {% if current_user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'profile_user_update_url' %}">Profile</a>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Profile</a>
-                        </li>
-                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'profile_user_update_url' %}">Profile</a>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Information
@@ -49,9 +43,8 @@
                         <li class="nav-item">
                             <a class="nav-link active">Hello, {{ current_user.username }}</a>
                         </li>
-                    {% else %}
                         <li class="nav-item">
-                            <a class="nav-link active">Hello, {{ current_user }}</a>
+                            <a class="nav-link active" href="{% url 'logout_url' %}">Logout</a>
                         </li>
                     {% endif %}
                 </ul>

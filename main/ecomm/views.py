@@ -4,6 +4,9 @@ from ecomm.models import Good, CustomUser, Image, Characteristic
 from ecomm.forms import *
 from django.views.generic.edit import UpdateView, CreateView
 from django.forms import inlineformset_factory
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, logout
+from django.utils.decorators import method_decorator
 
 
 def index(request):
@@ -56,6 +59,7 @@ class GoodsDetailView(DetailView):
         return context
 
 
+@method_decorator(login_required, name='dispatch')
 class ProfileUserUpdate(UpdateView):
     model = CustomUser
     form_class = ProfileUserForm
@@ -76,6 +80,7 @@ class ProfileUserUpdate(UpdateView):
         return super(ProfileUserUpdate, self).form_valid(form)
 
 
+@method_decorator(login_required, name='dispatch')
 class GoodCreateView(CreateView):
     model = Good
     form_class = GoodCreateForm
@@ -135,6 +140,7 @@ class GoodCreateView(CreateView):
         return context
 
 
+@method_decorator(login_required, name='dispatch')
 class GoodUpdateView(UpdateView):
     model = Good
     form_class = GoodUpdateForm
@@ -185,4 +191,42 @@ class GoodUpdateView(UpdateView):
         }
 
         return context
+
+
+# class LoginFormView(FormView):
+#     model = User
+#     form_class = LoginForm
+#     template_name = 'ecomm/login.html'
+#     success_url = '/accounts/profile/'
+#
+#     def get(self, *args, **kwargs):
+#         form = LoginFormView()
+#         if self.request.user is None:
+#             return redirect('/accounts/login/', form)
+#
+#         return render(self.request, 'ecomm/login.html')
+
+
+def user_login(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            clean_data = form.cleaned_data
+            user = User.objects.get(email__iexact=clean_data['email'])
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return redirect('/accounts/profile/')
+                else:
+                    return redirect('/accounts/login/')
+            else:
+                return redirect('/accounts/login/')
+    else:
+        form = LoginForm()
+    return render(request, 'ecomm/login.html', {'form': form})
+
+
+def user_logout(request):
+    logout(request)
+    return redirect('/')
 
