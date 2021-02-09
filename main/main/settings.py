@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'ecomm',
     'ckeditor',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [

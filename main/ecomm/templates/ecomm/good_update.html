@@ -1,0 +1,41 @@
+{% extends 'ecomm/base.html' %}
+
+{% block title %}
+    Edit goods
+{% endblock %}
+
+{% block content %}
+
+    <form action="{% url 'goods_update_url' pk=good_id %}" method="post">
+        {% csrf_token %}
+{#        <div class="row mb-3">#}
+{#            {% for field in form %}#}
+{#                <div class="form-group">#}
+{#                    {% if field.errors %}#}
+{#                        <div class="alert alert-danger">#}
+{#                            {{ field.errors }}#}
+{#                        </div>#}
+{#                    {% endif %}#}
+{##}
+{#                    {{ field.label }}#}
+{#                    {{ field }}#}
+{#                </div>#}
+{#            {% endfor %}#}
+{#        </div>#}
+
+        <div class="row-3">
+            {{ good_form.as_p }}
+        </div>
+
+        <div class="row-3">
+            {{ characteristic_formset.as_p }}
+        </div>
+
+        <div class="row-3">
+            {{ image_formset.as_p }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+
+{% endblock %}

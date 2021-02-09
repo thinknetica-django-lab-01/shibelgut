@@ -6,12 +6,6 @@
 
 {% block content %}
 
-{#    <div>#}
-{#        <a class="mb-5" href="{% url 'goods_list_url' %}">Goods</a>#}
-{#    </div>#}
-{#    <div>#}
-{#        <a class="mb-5" href="{% url 'main_url' %}">Main</a>#}
-{#    </div>#}
     <div class="row justify-content-md-center">
         <div class="col-8">
             <ul>
@@ -19,23 +13,28 @@
                 <li><p class="mb-5">Price: {{ goods.price }} $</p></li>
                 <li><p class="mb-5">Description: {{ goods.description }}</p></li>
                 <li><p class="mb-5">Brand: {{ goods.brand }}</p></li>
-                <li><p class="mb-5">Rating: {{ goods.rating }}</p></li>
-                {% if goods.issue_date %}
-                    <li><p class="mb-5">Issue date: {{ goods.issue_date }}</p></li>
-                {% else %}
-                {% endif %}
-                {% if goods.vendor_code != '' %}
-                    <li><p class="mb-5">Vendor code: {{ goods.vendor_code }}</p></li>
-                {% else %}
-                {% endif %}
+                <li><p class="mb-5">Issue date: {{ goods.issue_date }}</p></li>
+                <li><p class="mb-5">Vendor code: {{ goods.vendor_code }}</p></li>
                 <li><p class="mb-5">Available: {{ goods.is_available|lower }}</p></li>
+                <li><p class="mb-5">Rating: {{ goods.rating }}</p></li>
                 <li><p class="mb-5">Tag: {{ goods.tag.title|lower }}</p></li>
                 {#        <li><p class="mb-5">Shipping charge: {{ goods.shipping_charge }} $</p></li>#}
+                <li><p class="mb-5">Color: {{ characteristic.color|lower }}</p></li>
+                <li><p class="mb-5">Size: {{ characteristic.size|lower }}</p></li>
+                <li><p class="mb-5">Length: {{ characteristic.length|lower }}</p></li>
+                <li><p class="mb-5">Width: {{ characteristic.width|lower }}</p></li>
+                <li><p class="mb-5">Height: {{ characteristic.height|lower }}</p></li>
+                <li><p class="mb-5">Image 1: {{ image.image_1.name }}</p></li>
+                <li><p class="mb-5">Image 2: {{ image.image_2.name }}</p></li>
+                <li><p class="mb-5">Image 3: {{ image.image_3.name }}</p></li>
+                <li><p class="mb-5">Image 4: {{ image.image_4.name }}</p></li>
+                <li><p class="mb-5">Image 5: {{ image.image_5.name }}</p></li>
             </ul>
         </div>
         <div class="col-md-auto">
         </div>
         <div class="col">
+            <a class="nav-link" href="{% url 'goods_update_url' pk=goods.id %}">Edit goods</a>
         </div>
     </div>
 {% endblock %}
