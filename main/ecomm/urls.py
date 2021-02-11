@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from ecomm.views import *
 
 
@@ -9,6 +9,6 @@ urlpatterns = [
     path('goods/<int:pk>/edit/', GoodUpdateView.as_view(), name='goods_update_url'),
     path('goods/<int:pk>/', GoodsDetailView.as_view(), name='goods_detail_url'),
     path('accounts/profile/', ProfileUserUpdate.as_view(), name='profile_user_update_url'),
-    path('accounts/login/', user_login, name='login_url'),
-    path('accounts/logout/', user_logout, name='logout_url'),
+    # path('accounts/login/', user_login, name='login_url'),
+    path('accounts/', include('allauth.urls')),
 ]
