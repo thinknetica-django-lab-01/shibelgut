@@ -1,9 +1,18 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView
 from ecomm.models import Good, CustomUser, Image, Characteristic
+from django.conf import settings
 from ecomm.forms import *
 from django.views.generic.edit import UpdateView, CreateView
 from django.forms import inlineformset_factory
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login as auth_login, logout as auth_logout, REDIRECT_FIELD_NAME
+from django.utils.decorators import method_decorator
+from django.contrib import messages
+# from django.contrib.auth.forms import AuthenticationForm
+from django.views.decorators.debug import sensitive_post_parameters
+from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_protect
 
 
 def index(request):
@@ -56,6 +65,7 @@ class GoodsDetailView(DetailView):
         return context
 
 
+@method_decorator(login_required, name='dispatch')
 class ProfileUserUpdate(UpdateView):
     model = CustomUser
     form_class = ProfileUserForm
@@ -76,6 +86,7 @@ class ProfileUserUpdate(UpdateView):
         return super(ProfileUserUpdate, self).form_valid(form)
 
 
+@method_decorator(login_required, name='dispatch')
 class GoodCreateView(CreateView):
     model = Good
     form_class = GoodCreateForm
@@ -135,6 +146,7 @@ class GoodCreateView(CreateView):
         return context
 
 
+@method_decorator(login_required, name='dispatch')
 class GoodUpdateView(UpdateView):
     model = Good
     form_class = GoodUpdateForm
@@ -144,8 +156,8 @@ class GoodUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(GoodUpdateView, self).get_context_data(**kwargs)
 
-        if pk := self.kwargs['pk']:
-            good = get_object_or_404(Good, pk=pk)
+        if self.get_object():
+            good = get_object_or_404(Good, pk=self.kwargs.get('pk'))
         else:
             good = Good()
 
@@ -158,7 +170,7 @@ class GoodUpdateView(UpdateView):
         if self.request.method == 'POST':
             good_form = GoodUpdateForm(self.request.POST)
 
-            if pk:
+            if self.get_object():
                 good_form = GoodUpdateForm(self.request.POST, instance=good)
 
             characteristic_formset = CharacteristicFormset(self.request.POST, self.request.FILES)
@@ -185,4 +197,53 @@ class GoodUpdateView(UpdateView):
         }
 
         return context
+
+
+# @sensitive_post_parameters()
+# @csrf_protect
+# @never_cache
+# def user_login(request):
+#
+#     redirect_to = ''
+#
+#     if request.GET:
+#         redirect_to = request.GET['next']
+#
+#     if request.method == 'POST':
+#         form = LoginForm(request.POST)
+#         if form.is_valid():
+#             clean_data = form.cleaned_data
+#             try:
+#                 user = User.objects.get(email__iexact=clean_data['email'])
+#             except User.DoesNotExist:
+#                 messages.error(request, 'User does not exist!')
+#                 if redirect_to == '':
+#                     return redirect(settings.LOGIN_REDIRECT_URL, messages)
+#                 return redirect(redirect_to, messages)
+#             else:
+#                 if user.is_active:
+#                     if user.check_password(clean_data['password']):
+#                         auth_login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+#                         if redirect_to == '':
+#                             return redirect('/')
+#                         return redirect(redirect_to)
+#
+#                     messages.error(request, 'Invalid password!')
+#                     if redirect_to == '':
+#                         return redirect(settings.LOGIN_REDIRECT_URL, messages)
+#                     return redirect(redirect_to, messages)
+#
+#                 messages.error(request, 'User is blocked!')
+#                 if redirect_to == '':
+#                     return redirect(settings.LOGIN_REDIRECT_URL, messages)
+#                 return redirect(redirect_to, messages)
+#
+#     form = LoginForm()
+#
+#     return render(request, 'ecomm/login.html', {'form': form})
+#
+#
+# def user_logout(request):
+#     auth_logout(request)
+#     return redirect('/')
 

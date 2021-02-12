@@ -1,0 +1,38 @@
+{% extends 'ecomm/base.html' %}
+
+{% load i18n %}
+{% load account socialaccount %}
+{% load crispy_forms_filters socialaccount %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block content %}
+
+    {% get_providers as socialaccount_providers %}
+    {% if socialaccount_providers %}
+        <div class="row mb-3">
+            <li class="google">
+                <a class="btn btn-primary" href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a>
+            </li>
+        </div>
+    {% endif %}
+
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="row mb-3">
+            {{ form|crispy }}
+        </div>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-danger {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+
+{% endblock %}
+
