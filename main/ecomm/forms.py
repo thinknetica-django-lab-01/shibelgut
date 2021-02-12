@@ -9,9 +9,11 @@ from crispy_forms.layout import Layout, Fieldset
 
 
 class ProfileUserForm(forms.ModelForm):
-    validate_numeric = RegexValidator(regex='^[0-9]*$', message='Use only digits')
 
-    age = forms.CharField(max_length=3, required=True, validators=[validate_numeric])
+    # validate_numeric = RegexValidator(regex='^[0-9]*$', message='Use only digits')
+    # age = forms.CharField(max_length=3, required=True, validators=[validate_numeric])
+
+    age = forms.IntegerField(min_value=18, max_value=120, required=True)
 
     class Meta:
         model = User
@@ -40,14 +42,14 @@ class ProfileUserForm(forms.ModelForm):
         pass
 
 
-class LoginForm(forms.ModelForm):
-
-    email = forms.EmailInput()
-    password = forms.CharField(widget=forms.PasswordInput)
-
-    class Meta:
-        model = User
-        fields = ['email', 'password']
+# class LoginForm(forms.ModelForm):
+#
+#     email = forms.EmailInput()
+#     password = forms.CharField(widget=forms.PasswordInput)
+#
+#     class Meta:
+#         model = User
+#         fields = ['email', 'password']
 
 
 class GoodCreateForm(forms.ModelForm):

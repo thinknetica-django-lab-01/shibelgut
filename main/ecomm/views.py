@@ -156,10 +156,12 @@ class GoodUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(GoodUpdateView, self).get_context_data(**kwargs)
 
-        if self.get_object():
-            good = get_object_or_404(Good, pk=self.kwargs.get('pk'))
-        else:
-            good = Good()
+        # if self.get_object():
+        #     good = get_object_or_404(Good, pk=self.kwargs.get('pk'))
+        # else:
+        #     good = Good()
+
+        good = get_object_or_404(Good, pk=self.kwargs.get('pk'))
 
         good_form = GoodUpdateForm(instance=good)
         CharacteristicFormset = inlineformset_factory(Good, Characteristic, exclude=('good',), can_delete=False, max_num=5)
