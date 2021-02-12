@@ -24,7 +24,7 @@
                 <div class="col-8">
                     <ul>
                         {% for good in page_obj.object_list %}
-                            <li><a class="" href="{{ good.id }}">{{ good.title }}</a></li>
+                            <li><a class="" href="{{ good.get_absolute_url }}">{{ good.title }}</a></li>
                         {% endfor %}
                     </ul>
                     {% if is_paginated %}

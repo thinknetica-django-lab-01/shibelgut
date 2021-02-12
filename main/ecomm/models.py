@@ -13,6 +13,9 @@ class Category(models.Model):
     def __str__(self):
         return '{}'.format(self.title)
 
+    def get_absolute_url(self):
+        return '/%s/' % self.title
+
     class Meta:
         ordering = ['title']
         verbose_name = 'Категория'
@@ -27,6 +30,9 @@ class Tag(models.Model):
     def __str__(self):
         return '{}'.format(self.title)
 
+    def get_absolute_url(self):
+        return '/%s/' % self.title
+
     class Meta:
         ordering = ['title']
         verbose_name = 'Тэг'
@@ -34,13 +40,13 @@ class Tag(models.Model):
 
 
 class Good(models.Model):
-    title = models.CharField(default='default title', max_length=150, verbose_name='Наименование товара', blank=False,
+    title = models.CharField(default='title', max_length=150, verbose_name='Наименование товара', blank=False,
                              db_index=True)
-    price = models.DecimalField(default=10, max_digits=7, decimal_places=2, verbose_name='Стоимость товара',
+    price = models.DecimalField(default=10.99, max_digits=7, decimal_places=2, verbose_name='Стоимость товара',
                                 blank=False, db_index=True)
-    description = models.TextField(default='default description', max_length=500, verbose_name='Описание товара',
+    description = models.TextField(default='description', max_length=500, verbose_name='Описание товара',
                                    blank=False)
-    brand = models.CharField(default='default brand', max_length=150, verbose_name='Брэнд', blank=False, db_index=True)
+    brand = models.CharField(default='brand', max_length=150, verbose_name='Брэнд', blank=False, db_index=True)
     quantity = models.IntegerField(default=0, verbose_name='Количество')
     issue_date = models.DateField(null=True, verbose_name='Дата изготовления', blank=True, db_index=True)
     vendor_code = models.CharField(null=True, max_length=254, verbose_name='Артикул товара', blank=False, db_index=True)
@@ -63,7 +69,7 @@ class Good(models.Model):
         return '{}'.format(self.title)
 
     def get_absolute_url(self):
-        return reverse('goods_detail_url', kwargs={'id': self.id})
+        return reverse('goods_detail_url', args=[self.id])
 
     # Наличие товара на складе
     @property
@@ -126,7 +132,7 @@ class Image(models.Model):
 
 
 class Characteristic(models.Model):
-    color = models.CharField(default='default color', max_length=100, blank=False, db_index=True)
+    color = models.CharField(default='color', max_length=100, blank=False, db_index=True)
     size = models.IntegerField(default='default size', null=True)
     length = models.DecimalField(default='default length', max_digits=7, decimal_places=2, null=True)
     width = models.DecimalField(default='default width', max_digits=7, decimal_places=2, null=True)
@@ -150,7 +156,8 @@ class CustomUser(models.Model):
         (SELLER, 'Продавец'),
         (CUSTOMER, 'Покупатель'),
     )
-    role = models.CharField(max_length=1, choices=ROLE_CHOICES, null=True, blank=True, verbose_name='Роль', db_index=True)
+    role = models.CharField(max_length=1, choices=ROLE_CHOICES, null=True, blank=True, verbose_name='Роль',
+                            db_index=True)
     num_failed_logins = models.IntegerField(null=True, verbose_name='Количество неудачных входов')
     upload_path = 'users/'
     photo = models.ImageField(upload_to=upload_path, verbose_name='Фото профиля', null=True)
@@ -162,10 +169,17 @@ class CustomUser(models.Model):
         (MAN, 'Мужской'),
         (FEMALE, 'Женский'),
     )
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default=MAN, null=True, blank=True, verbose_name='Пол', db_index=True)
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default=MAN, null=True, blank=True,
+                              verbose_name='Пол', db_index=True)
     country = models.CharField(max_length=150, null=True, blank=True, verbose_name='Страна', db_index=True)
     city = models.CharField(max_length=150, null=True, blank=True, verbose_name='Город', db_index=True)
     address = models.CharField(max_length=150, null=True, blank=True, verbose_name='Адрес', db_index=True)
+
+    def __str__(self):
+        return 'Username: {}'.format(self.user.username)
+
+    def get_absolute_url(self):
+        return '/%i/' % self.user.pk
 
     class Meta:
         # ordering = ['user.username']
@@ -188,11 +202,15 @@ class Review(models.Model):
     text = models.TextField(max_length=500, blank=False)
     date = models.DateTimeField(auto_now_add=True, null=True, db_index=True)
     good = models.ForeignKey('Good', on_delete=models.CASCADE, related_name='reviews', blank=True, verbose_name='Товар')
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True, related_name='reviews', blank=True,
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True, related_name='reviews',
+                                blank=True,
                                 verbose_name='Пользователь')
 
     def __str__(self):
-        return 'Text: {}'.format(self.text)
+        return 'Username: {}'.format(self.user.user.username)
+
+    def get_absolute_url(self):
+        return '/%i' % self.good.pk
 
     class Meta:
         verbose_name = 'Отзыв'
@@ -202,11 +220,15 @@ class Review(models.Model):
 class Customer(models.Model):
     goods = models.ManyToManyField('Good', related_name='customers', blank=True, verbose_name='Товары')
     purchase_date = models.DateTimeField(default=datetime.now, null=True, verbose_name='Дата покупки', db_index=True)
-    user = models.OneToOneField(CustomUser, default=1, on_delete=models.CASCADE, primary_key=True, related_name='customer',
+    user = models.OneToOneField(CustomUser, default=1, on_delete=models.CASCADE, primary_key=True,
+                                related_name='customer',
                                 verbose_name='Пользователь')
 
-    # def __str__(self):
-    #     return 'Name: {} {}'.format(self.customuser.user, self.customuser.user.last)
+    def __str__(self):
+        return 'Username: {}'.format(self.user.user.username)
+
+    def get_absolute_url(self):
+        return '/%i/' % self.user.user.pk
 
     class Meta:
         verbose_name = 'Покупатель'
@@ -221,11 +243,15 @@ class Seller(models.Model):
     manufacturer = models.CharField(max_length=150, null=True, verbose_name='Производитель', db_index=True)
     manufacturer_country = models.CharField(max_length=150, null=True, verbose_name='Страна происхождения',
                                             db_index=True)
-    user = models.OneToOneField(CustomUser, default=1, on_delete=models.CASCADE, primary_key=True, related_name='seller',
+    user = models.OneToOneField(CustomUser, default=1, on_delete=models.CASCADE, primary_key=True,
+                                related_name='seller',
                                 verbose_name='Пользователь')
 
     def __str__(self):
-        return 'Company name: {}'.format(self.company_name)
+        return 'Username: {}'.format(self.user.user.username)
+
+    def get_absolute_url(self):
+        return '/%i/' % self.user.user.pk
 
     class Meta:
         ordering = ['company_name']

@@ -1,8 +1,18 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView
-from ecomm.models import Good, CustomUser
-from ecomm.forms import ProfileUserForm
-from django.views.generic.edit import UpdateView
+from ecomm.models import Good, CustomUser, Image, Characteristic
+from django.conf import settings
+from ecomm.forms import *
+from django.views.generic.edit import UpdateView, CreateView
+from django.forms import inlineformset_factory
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login as auth_login, logout as auth_logout, REDIRECT_FIELD_NAME
+from django.utils.decorators import method_decorator
+from django.contrib import messages
+# from django.contrib.auth.forms import AuthenticationForm
+from django.views.decorators.debug import sensitive_post_parameters
+from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_protect
 
 
 def index(request):
@@ -46,11 +56,16 @@ class GoodsDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
+        characteristics = Characteristic.objects.get(good_id=self.kwargs.get('pk'))
+        images = Image.objects.get(good_id=self.kwargs.get('pk'))
+        context['characteristic'] = characteristics
+        context['image'] = images
         context['current_username'] = self.request.user
 
         return context
 
 
+@method_decorator(login_required, name='dispatch')
 class ProfileUserUpdate(UpdateView):
     model = CustomUser
     form_class = ProfileUserForm
@@ -69,4 +84,166 @@ class ProfileUserUpdate(UpdateView):
         clean = form.cleaned_data
         context = {}
         return super(ProfileUserUpdate, self).form_valid(form)
+
+
+@method_decorator(login_required, name='dispatch')
+class GoodCreateView(CreateView):
+    model = Good
+    form_class = GoodCreateForm
+    template_name = 'ecomm/good_create.html'
+    success_url = '/goods/add/'
+
+    def get(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        characteristic_form = CharacteristicFormset()
+        image_form = ImageFormset()
+
+        return self.render_to_response(self.get_context_data(
+            form=form, characteristic_form=characteristic_form, image_form=image_form))
+
+    def post(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        characteristic_form = CharacteristicFormset(self.request.POST)
+        image_form = ImageFormset(self.request.POST)
+
+        if form.is_valod() and characteristic_form.is_valid() and image_form.is_valid():
+            return self.form_valid(form, characteristic_form, image_form)
+
+        return self.form_valid(form, characteristic_form, image_form)
+
+    def form_valid(self, form, characteristic_form, image_form):
+        self.object = form.save()
+        characteristic_form.instance = self.object
+        characteristic_form.save()
+        image_form.instance = self.object
+        image_form.save()
+
+        return redirect(self.get_success_url())
+
+    def get_context_data(self, **kwargs):
+        context = super(GoodCreateView, self).get_context_data(**kwargs)
+        characteristic_formhelper = CharacteristicFormHelper()
+        image_formhelper = ImageFormHelper()
+
+        if self.request.POST:
+            context['form'] = GoodCreateForm(self.request.POST)
+            context['characteristic_form'] = CharacteristicFormset(self.request.POST)
+            context['characteristic_formhelper'] = characteristic_formhelper
+            context['image_form'] = ImageFormset(self.request.POST)
+            context['image_formhelper'] = image_formhelper
+        else:
+            context['form'] = GoodCreateForm()
+            context['characteristic_form'] = CharacteristicFormset()
+            context['characteristic_formhelper'] = characteristic_formhelper
+            context['image_form'] = ImageFormset()
+            context['image_formhelper'] = image_formhelper
+
+        context['current_username'] = self.request.user
+
+        return context
+
+
+@method_decorator(login_required, name='dispatch')
+class GoodUpdateView(UpdateView):
+    model = Good
+    form_class = GoodUpdateForm
+    template_name = 'ecomm/good_update.html'
+    success_url = '/goods/<int:pk>/edit/'
+
+    def get_context_data(self, **kwargs):
+        context = super(GoodUpdateView, self).get_context_data(**kwargs)
+
+        if self.get_object():
+            good = get_object_or_404(Good, pk=self.kwargs.get('pk'))
+        else:
+            good = Good()
+
+        good_form = GoodUpdateForm(instance=good)
+        CharacteristicFormset = inlineformset_factory(Good, Characteristic, exclude=('good',), can_delete=False, max_num=5)
+        ImageFormset = inlineformset_factory(Good, Image, exclude=('good',), can_delete=False, max_num=5)
+        characteristic_formset = CharacteristicFormset(instance=good)
+        image_formset = ImageFormset(instance=good)
+
+        if self.request.method == 'POST':
+            good_form = GoodUpdateForm(self.request.POST)
+
+            if self.get_object():
+                good_form = GoodUpdateForm(self.request.POST, instance=good)
+
+            characteristic_formset = CharacteristicFormset(self.request.POST, self.request.FILES)
+            image_formset = ImageFormset(self.request.POST, self.request.FILES)
+
+            if good_form.is_valid():
+                created_good = good_form.save(commit=False)
+                characteristic_formset = CharacteristicFormset(self.request.POST, self.request.FILES, instance=created_good)
+                image_formset = ImageFormset(self.request.POST, self.request.FILES, instance=created_good)
+
+                if characteristic_formset.is_valid() and image_formset.is_valid():
+                    created_good.save()
+                    characteristic_formset.save()
+                    image_formset.save()
+
+                    return redirect(created_good.get_absolute_url())
+
+        context = {
+            'good_form': good_form,
+            'characteristic_formset': characteristic_formset,
+            'image_formset': image_formset,
+            'good_id': good.id,
+            'current_username': self.request.user
+        }
+
+        return context
+
+
+# @sensitive_post_parameters()
+# @csrf_protect
+# @never_cache
+# def user_login(request):
+#
+#     redirect_to = ''
+#
+#     if request.GET:
+#         redirect_to = request.GET['next']
+#
+#     if request.method == 'POST':
+#         form = LoginForm(request.POST)
+#         if form.is_valid():
+#             clean_data = form.cleaned_data
+#             try:
+#                 user = User.objects.get(email__iexact=clean_data['email'])
+#             except User.DoesNotExist:
+#                 messages.error(request, 'User does not exist!')
+#                 if redirect_to == '':
+#                     return redirect(settings.LOGIN_REDIRECT_URL, messages)
+#                 return redirect(redirect_to, messages)
+#             else:
+#                 if user.is_active:
+#                     if user.check_password(clean_data['password']):
+#                         auth_login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+#                         if redirect_to == '':
+#                             return redirect('/')
+#                         return redirect(redirect_to)
+#
+#                     messages.error(request, 'Invalid password!')
+#                     if redirect_to == '':
+#                         return redirect(settings.LOGIN_REDIRECT_URL, messages)
+#                     return redirect(redirect_to, messages)
+#
+#                 messages.error(request, 'User is blocked!')
+#                 if redirect_to == '':
+#                     return redirect(settings.LOGIN_REDIRECT_URL, messages)
+#                 return redirect(redirect_to, messages)
+#
+#     form = LoginForm()
+#
+#     return render(request, 'ecomm/login.html', {'form': form})
+#
+#
+# def user_logout(request):
+#     auth_logout(request)
+#     return redirect('/')
 

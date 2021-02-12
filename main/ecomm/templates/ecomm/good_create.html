@@ -1,0 +1,25 @@
+{% extends 'ecomm/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Add goods
+{% endblock %}
+
+{% block content %}
+
+    <form action="{% url 'goods_create_url' %}" method="post">
+        {% csrf_token %}
+        <div class="row mb-3">
+            {% crispy form %}
+            {{ characteristic_form.management_form }}
+            {{ characteristic_form.non_form_errors }}
+            {{ image_form.management_form }}
+            {{ image_form.non_form_errors }}
+            {% crispy characteristic_form characteristic_formhelper %}
+            {% crispy image_form image_formhelper %}
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+
+{% endblock %}

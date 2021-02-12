@@ -1,18 +1,21 @@
 {% extends 'ecomm/base.html' %}
 
-{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
 
 {% block title %}
-    Goods
+    Edit goods
 {% endblock %}
 
 {% block content %}
 
-    <form action="{% url 'profile_user_update_url' %}" method="post">
+    <form action="{% url 'goods_update_url' pk=good_id %}" method="post">
         {% csrf_token %}
         <div class="row mb-3">
-            {{ form|crispy }}
+            {{ good_form|crispy }}
+            {{ characteristic_formset|crispy }}
+            {{ image_formset|crispy }}
         </div>
+
         <button type="submit" class="btn btn-primary">Save</button>
     </form>
 
