@@ -10,20 +10,6 @@
 
     <form action="{% url 'goods_create_url' %}" method="post">
         {% csrf_token %}
-        {#        <div class="row mb-3">#}
-        {#            {% for field in form %}#}
-        {#                <div class="form-group">#}
-        {#                    {% if field.errors %}#}
-        {#                        <div class="alert alert-danger">#}
-        {#                            {{ field.errors }}#}
-        {#                        </div>#}
-        {#                    {% endif %}#}
-        {##}
-        {#                    {{ field.label }}#}
-        {#                    {{ field }}#}
-        {#                </div>#}
-        {#            {% endfor %}#}
-        {#        </div>#}
         <div class="row mb-3">
             {% crispy form %}
             {{ characteristic_form.management_form }}

@@ -1,12 +1,18 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView
 from ecomm.models import Good, CustomUser, Image, Characteristic
+from django.conf import settings
 from ecomm.forms import *
 from django.views.generic.edit import UpdateView, CreateView
 from django.forms import inlineformset_factory
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, logout
+from django.contrib.auth import login as auth_login, logout as auth_logout, REDIRECT_FIELD_NAME
 from django.utils.decorators import method_decorator
+from django.contrib import messages
+# from django.contrib.auth.forms import AuthenticationForm
+from django.views.decorators.debug import sensitive_post_parameters
+from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_protect
 
 
 def index(request):
@@ -150,8 +156,8 @@ class GoodUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(GoodUpdateView, self).get_context_data(**kwargs)
 
-        if pk := self.kwargs['pk']:
-            good = get_object_or_404(Good, pk=pk)
+        if self.get_object():
+            good = get_object_or_404(Good, pk=self.kwargs.get('pk'))
         else:
             good = Good()
 
@@ -164,7 +170,7 @@ class GoodUpdateView(UpdateView):
         if self.request.method == 'POST':
             good_form = GoodUpdateForm(self.request.POST)
 
-            if pk:
+            if self.get_object():
                 good_form = GoodUpdateForm(self.request.POST, instance=good)
 
             characteristic_formset = CharacteristicFormset(self.request.POST, self.request.FILES)
@@ -193,40 +199,51 @@ class GoodUpdateView(UpdateView):
         return context
 
 
-# class LoginFormView(FormView):
-#     model = User
-#     form_class = LoginForm
-#     template_name = 'ecomm/login.html'
-#     success_url = '/accounts/profile/'
+# @sensitive_post_parameters()
+# @csrf_protect
+# @never_cache
+# def user_login(request):
 #
-#     def get(self, *args, **kwargs):
-#         form = LoginFormView()
-#         if self.request.user is None:
-#             return redirect('/accounts/login/', form)
+#     redirect_to = ''
 #
-#         return render(self.request, 'ecomm/login.html')
-
-
-def user_login(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            clean_data = form.cleaned_data
-            user = User.objects.get(email__iexact=clean_data['email'])
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    return redirect('/accounts/profile/')
-                else:
-                    return redirect('/accounts/login/')
-            else:
-                return redirect('/accounts/login/')
-    else:
-        form = LoginForm()
-    return render(request, 'ecomm/login.html', {'form': form})
-
-
-def user_logout(request):
-    logout(request)
-    return redirect('/')
+#     if request.GET:
+#         redirect_to = request.GET['next']
+#
+#     if request.method == 'POST':
+#         form = LoginForm(request.POST)
+#         if form.is_valid():
+#             clean_data = form.cleaned_data
+#             try:
+#                 user = User.objects.get(email__iexact=clean_data['email'])
+#             except User.DoesNotExist:
+#                 messages.error(request, 'User does not exist!')
+#                 if redirect_to == '':
+#                     return redirect(settings.LOGIN_REDIRECT_URL, messages)
+#                 return redirect(redirect_to, messages)
+#             else:
+#                 if user.is_active:
+#                     if user.check_password(clean_data['password']):
+#                         auth_login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+#                         if redirect_to == '':
+#                             return redirect('/')
+#                         return redirect(redirect_to)
+#
+#                     messages.error(request, 'Invalid password!')
+#                     if redirect_to == '':
+#                         return redirect(settings.LOGIN_REDIRECT_URL, messages)
+#                     return redirect(redirect_to, messages)
+#
+#                 messages.error(request, 'User is blocked!')
+#                 if redirect_to == '':
+#                     return redirect(settings.LOGIN_REDIRECT_URL, messages)
+#                 return redirect(redirect_to, messages)
+#
+#     form = LoginForm()
+#
+#     return render(request, 'ecomm/login.html', {'form': form})
+#
+#
+# def user_logout(request):
+#     auth_logout(request)
+#     return redirect('/')
 
