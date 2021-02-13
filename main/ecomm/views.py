@@ -1,15 +1,20 @@
+from django.contrib.auth.models import User, Group, Permission
+from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import login_required
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView
-from ecomm.models import Good, CustomUser, Image, Characteristic
-from django.conf import settings
-from ecomm.forms import *
 from django.views.generic.edit import UpdateView, CreateView
-from django.forms import inlineformset_factory
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login as auth_login, logout as auth_logout, REDIRECT_FIELD_NAME
 from django.utils.decorators import method_decorator
+from ecomm.forms import *
+from ecomm.models import Good, CustomUser, Image, Characteristic, Seller
+from django.forms import inlineformset_factory
+
+from django.conf import settings
 from django.contrib import messages
-# from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login as auth_login, logout as auth_logout, REDIRECT_FIELD_NAME
+from django.contrib.auth.forms import AuthenticationForm
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
@@ -87,7 +92,8 @@ class ProfileUserUpdate(UpdateView):
 
 
 @method_decorator(login_required, name='dispatch')
-class GoodCreateView(CreateView):
+class GoodCreateView(PermissionRequiredMixin, CreateView):
+    permission_required = 'ecomm.add_good'
     model = Good
     form_class = GoodCreateForm
     template_name = 'ecomm/good_create.html'
@@ -109,7 +115,7 @@ class GoodCreateView(CreateView):
         characteristic_form = CharacteristicFormset(self.request.POST)
         image_form = ImageFormset(self.request.POST)
 
-        if form.is_valod() and characteristic_form.is_valid() and image_form.is_valid():
+        if form.is_valid() and characteristic_form.is_valid() and image_form.is_valid():
             return self.form_valid(form, characteristic_form, image_form)
 
         return self.form_valid(form, characteristic_form, image_form)
@@ -147,19 +153,18 @@ class GoodCreateView(CreateView):
 
 
 @method_decorator(login_required, name='dispatch')
-class GoodUpdateView(UpdateView):
+class GoodUpdateView(PermissionRequiredMixin, UserPassesTestMixin, UpdateView):
+    permission_required = 'ecomm.change_good'
     model = Good
     form_class = GoodUpdateForm
     template_name = 'ecomm/good_update.html'
     success_url = '/goods/<int:pk>/edit/'
 
+    def test_func(self):
+        return self.request.user.id == self.get_object().seller_id
+
     def get_context_data(self, **kwargs):
         context = super(GoodUpdateView, self).get_context_data(**kwargs)
-
-        # if self.get_object():
-        #     good = get_object_or_404(Good, pk=self.kwargs.get('pk'))
-        # else:
-        #     good = Good()
 
         good = get_object_or_404(Good, pk=self.kwargs.get('pk'))
 
@@ -199,6 +204,74 @@ class GoodUpdateView(UpdateView):
         }
 
         return context
+
+
+@receiver(post_save, sender=User)
+def create_user(sender, instance, **kwargs):
+    common_users_group, created = Group.objects.get_or_create(name='Common Users')
+    if created:
+        common_users_group.permissions.add(Permission.objects.get(codename__icontains='view_good'))
+    common_users_group.user_set.add(instance)
+
+    return common_users_group
+
+
+@receiver(post_save, sender=User)
+def create_seller(sender, instance, **kwargs):
+    sellers_group, created = Group.objects.get_or_create(name='Sellers')
+    if created:
+        list_permissions = list(
+            Permission.objects.filter(codename__icontains='good').exclude(codename__icontains='delete_good'))
+        for perm in list_permissions:
+            sellers_group.permissions.add(perm)
+    sellers_group.user_set.add(instance)
+
+    return sellers_group
+
+
+@method_decorator(login_required, name='dispatch')
+class SellerCreateView(CreateView):
+    model = Seller
+    form_class = SellerCreateForm
+    template_name = 'ecomm/profile_seller.html'
+    success_url = '/accounts/profile/seller/'
+
+    def get(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+
+        return self.render_to_response(self.get_context_data(form=form))
+
+    def post(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+
+        if form.is_valid():
+            return self.form_valid(form)
+
+        return self.form_valid(form)
+
+    def form_valid(self, form):
+        self.object = form.save()
+
+        return redirect(self.get_success_url())
+
+    def get_context_data(self, **kwargs):
+        context = super(SellerCreateView, self).get_context_data(**kwargs)
+
+        if self.request.POST:
+            context['form'] = SellerCreateForm(self.request.POST)
+            seller = Seller.objects.get(id=self.request.user.id)
+            create_seller(Seller, seller)
+            context['is_seller'] = True
+        else:
+            context['form'] = SellerCreateForm()
+
+        context['current_username'] = self.request.user
+
+        return context
+
 
 
 # @sensitive_post_parameters()

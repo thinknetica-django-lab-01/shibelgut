@@ -1,8 +1,8 @@
 from django import forms
-from ecomm.models import User, Good, Image, Characteristic
+from ecomm.models import User, Good, Image, Characteristic, Seller
 from django.core.exceptions import ValidationError
-from django.core.validators import RegexValidator
 from django.forms.models import inlineformset_factory
+from django.core.validators import RegexValidator
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset
@@ -102,4 +102,10 @@ class CharacteristicUpdateForm(forms.ModelForm):
     class Meta:
         model = Characteristic
         exclude = ['good', ]
+
+
+class SellerCreateForm(forms.ModelForm):
+    class Meta:
+        model = Seller
+        exclude = ['user', ]
 

@@ -11,4 +11,5 @@ urlpatterns = [
     path('accounts/profile/', ProfileUserUpdate.as_view(), name='profile_user_update_url'),
     # path('accounts/login/', user_login, name='login_url'),
     path('accounts/', include('allauth.urls')),
+    path('accounts/profile/seller/', SellerCreateView.as_view(), name='profile_seller_create_url'),
 ]

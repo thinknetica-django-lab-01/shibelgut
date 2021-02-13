@@ -7,8 +7,7 @@ from django.dispatch import receiver
 
 
 class Category(models.Model):
-    title = models.CharField(default='default title', max_length=150, verbose_name='Наименование категории',
-                             blank=False, db_index=True)
+    title = models.CharField(max_length=150, verbose_name='Наименование категории', blank=False, db_index=True)
 
     def __str__(self):
         return '{}'.format(self.title)
@@ -23,8 +22,7 @@ class Category(models.Model):
 
 
 class Tag(models.Model):
-    title = models.CharField(default='default title', max_length=150, verbose_name='Наименование тэга', blank=False,
-                             db_index=True)
+    title = models.CharField(max_length=150, verbose_name='Наименование тэга', blank=False, db_index=True)
     category = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='tags', verbose_name='Категория')
 
     def __str__(self):
@@ -40,23 +38,21 @@ class Tag(models.Model):
 
 
 class Good(models.Model):
-    title = models.CharField(default='title', max_length=150, verbose_name='Наименование товара', blank=False,
-                             db_index=True)
-    price = models.DecimalField(default=10.99, max_digits=7, decimal_places=2, verbose_name='Стоимость товара',
+    title = models.CharField(max_length=150, verbose_name='Наименование товара', blank=False, db_index=True)
+    price = models.DecimalField(max_digits=7, decimal_places=2, verbose_name='Стоимость товара',
                                 blank=False, db_index=True)
-    description = models.TextField(default='description', max_length=500, verbose_name='Описание товара',
-                                   blank=False)
-    brand = models.CharField(default='brand', max_length=150, verbose_name='Брэнд', blank=False, db_index=True)
-    quantity = models.IntegerField(default=0, verbose_name='Количество')
+    description = models.TextField(max_length=500, verbose_name='Описание товара', blank=False)
+    brand = models.CharField(max_length=150, verbose_name='Брэнд', blank=False, db_index=True)
+    quantity = models.IntegerField(verbose_name='Количество')
     issue_date = models.DateField(null=True, verbose_name='Дата изготовления', blank=True, db_index=True)
     vendor_code = models.CharField(null=True, max_length=254, verbose_name='Артикул товара', blank=False, db_index=True)
     pub_date = models.DateTimeField(auto_now_add=True, null=True, verbose_name='Дата опубликования', db_index=True)
-    tag = models.ForeignKey('Tag', default=1, on_delete=models.CASCADE, related_name='goods', verbose_name='Тэг')
-    seller = models.ForeignKey('Seller', default=1, on_delete=models.CASCADE, related_name='goods', blank=True,
+    tag = models.ForeignKey('Tag', on_delete=models.CASCADE, related_name='goods', verbose_name='Тэг')
+    seller = models.ForeignKey('Seller', on_delete=models.CASCADE, related_name='goods', blank=True,
                                verbose_name='Продавец')
     # is_available = models.BooleanField(default=False, verbose_name='Наличие товара', db_index=True)
     # shipping_charge = models.DecimalField(default=0, max_digits=7, decimal_places=2, db_index=True)
-    rating = models.IntegerField(default=0, null=True, verbose_name='Рэйтинг товара', blank=True, db_index=True)
+    rating = models.IntegerField(null=True, verbose_name='Рэйтинг товара', blank=True, db_index=True)
 
     # def __init__(self, shipping_percent, commission_percent, *args, **kwargs):
     #     self.__shipping = shipping_percent
@@ -132,11 +128,11 @@ class Image(models.Model):
 
 
 class Characteristic(models.Model):
-    color = models.CharField(default='color', max_length=100, blank=False, db_index=True)
-    size = models.IntegerField(default='default size', null=True)
-    length = models.DecimalField(default='default length', max_digits=7, decimal_places=2, null=True)
-    width = models.DecimalField(default='default width', max_digits=7, decimal_places=2, null=True)
-    height = models.DecimalField(default='default height', max_digits=7, decimal_places=2, null=True)
+    color = models.CharField(max_length=100, null=True, blank=False, db_index=True)
+    size = models.IntegerField(null=True)
+    length = models.DecimalField(max_digits=7, decimal_places=2, null=True)
+    width = models.DecimalField(max_digits=7, decimal_places=2, null=True)
+    height = models.DecimalField(max_digits=7, decimal_places=2, null=True)
     good = models.OneToOneField(Good, on_delete=models.CASCADE, primary_key=True, related_name='characteristics',
                                 verbose_name='Товар')
 
@@ -203,8 +199,7 @@ class Review(models.Model):
     date = models.DateTimeField(auto_now_add=True, null=True, db_index=True)
     good = models.ForeignKey('Good', on_delete=models.CASCADE, related_name='reviews', blank=True, verbose_name='Товар')
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True, related_name='reviews',
-                                blank=True,
-                                verbose_name='Пользователь')
+                                blank=True, verbose_name='Пользователь')
 
     def __str__(self):
         return 'Username: {}'.format(self.user.user.username)
@@ -220,8 +215,7 @@ class Review(models.Model):
 class Customer(models.Model):
     goods = models.ManyToManyField('Good', related_name='customers', blank=True, verbose_name='Товары')
     purchase_date = models.DateTimeField(default=datetime.now, null=True, verbose_name='Дата покупки', db_index=True)
-    user = models.OneToOneField(CustomUser, default=1, on_delete=models.CASCADE, primary_key=True,
-                                related_name='customer',
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True, related_name='customer',
                                 verbose_name='Пользователь')
 
     def __str__(self):
@@ -236,16 +230,15 @@ class Customer(models.Model):
 
 
 class Seller(models.Model):
-    company_name = models.CharField(default='default name', max_length=150, verbose_name='Название компании',
+    company_name = models.CharField(max_length=150, null=True, verbose_name='Название компании',
                                     blank=False, db_index=True)
     legal_entity = models.CharField(max_length=150, null=True, verbose_name='Юридическое лицо',
                                     blank=False, db_index=True)
     manufacturer = models.CharField(max_length=150, null=True, verbose_name='Производитель', db_index=True)
     manufacturer_country = models.CharField(max_length=150, null=True, verbose_name='Страна происхождения',
                                             db_index=True)
-    user = models.OneToOneField(CustomUser, default=1, on_delete=models.CASCADE, primary_key=True,
-                                related_name='seller',
-                                verbose_name='Пользователь')
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True,
+                                related_name='seller', verbose_name='Пользователь')
 
     def __str__(self):
         return 'Username: {}'.format(self.user.user.username)
