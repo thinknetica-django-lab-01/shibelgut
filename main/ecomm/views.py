@@ -10,11 +10,13 @@ from django.utils.decorators import method_decorator
 from ecomm.forms import *
 from ecomm.models import Good, CustomUser, Image, Characteristic, Seller
 from django.forms import inlineformset_factory
+from django.contrib.auth.forms import UserCreationForm
+from django.core.mail import send_mail, EmailMultiAlternatives
+# from main.settings import EMAIL_HOST_USER
 
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login as auth_login, logout as auth_logout, REDIRECT_FIELD_NAME
-from django.contrib.auth.forms import AuthenticationForm
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
@@ -206,17 +208,33 @@ class GoodUpdateView(PermissionRequiredMixin, UserPassesTestMixin, UpdateView):
         return context
 
 
-@receiver(post_save, sender=User)
-def create_user(sender, instance, **kwargs):
+def send_mail_new_users(recipient, subject):
+    from_email = 'from@example.com'
+    text_content = 'We\'re glad to see you on our site.'
+    html_content = '<p>We\'re glad to see you on our site.</p>'
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [recipient])
+    msg.attach_alternative(html_content, 'text/html')
+    msg.send()
+
+
+def create_common_users_group():
     common_users_group, created = Group.objects.get_or_create(name='Common Users')
     if created:
         common_users_group.permissions.add(Permission.objects.get(codename__icontains='view_good'))
-    common_users_group.user_set.add(instance)
 
     return common_users_group
 
 
 @receiver(post_save, sender=User)
+def create_user(sender, instance, created, **kwargs):
+    if created:
+        instance.groups.add(create_common_users_group())
+
+        if instance.email:
+            send_mail_new_users([instance.email, ], 'Welcome to our site!')
+
+
+@receiver(post_save, sender=Seller)
 def create_seller(sender, instance, **kwargs):
     sellers_group, created = Group.objects.get_or_create(name='Sellers')
     if created:
@@ -271,7 +289,6 @@ class SellerCreateView(CreateView):
         context['current_username'] = self.request.user
 
         return context
-
 
 
 # @sensitive_post_parameters()
