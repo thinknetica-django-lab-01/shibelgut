@@ -1,5 +1,5 @@
 from django import forms
-from ecomm.models import User, Good, Image, Characteristic, Seller
+from ecomm.models import User, Good, Image, Characteristic, Seller, Subscriber
 from django.core.exceptions import ValidationError
 from django.forms.models import inlineformset_factory
 from django.core.validators import RegexValidator
@@ -42,14 +42,13 @@ class ProfileUserForm(forms.ModelForm):
         pass
 
 
-# class LoginForm(forms.ModelForm):
-#
-#     email = forms.EmailInput()
-#     password = forms.CharField(widget=forms.PasswordInput)
-#
-#     class Meta:
-#         model = User
-#         fields = ['email', 'password']
+class SubscriptionForm(forms.ModelForm):
+
+    is_subscribed = forms.BooleanField(label='Subscribe to new goods')
+
+    class Meta:
+        model = Subscriber
+        fields = ['is_subscribed']
 
 
 class GoodCreateForm(forms.ModelForm):
