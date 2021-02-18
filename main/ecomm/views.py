@@ -11,7 +11,6 @@ from ecomm.forms import *
 from ecomm.models import Good, CustomUser, Image, Characteristic, Seller, Subscriber
 from django.forms import inlineformset_factory
 from django.core.mail import send_mail, EmailMultiAlternatives
-from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from main.settings import EMAIL_HOST_USER
 from django.template import loader
 
@@ -233,6 +232,7 @@ def create_common_users_group():
 def create_user(sender, instance, created, **kwargs):
     if created:
         instance.groups.add(create_common_users_group())
+
         send_confirmation_email([instance.email, ], {'recipient_email': instance.email})
 
 
