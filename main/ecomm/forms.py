@@ -1,17 +1,19 @@
 from django import forms
-from ecomm.models import User, Good, Image, Characteristic
+from ecomm.models import User, Good, Image, Characteristic, Seller, Subscriber
 from django.core.exceptions import ValidationError
-from django.core.validators import RegexValidator
 from django.forms.models import inlineformset_factory
+from django.core.validators import RegexValidator
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset
 
 
 class ProfileUserForm(forms.ModelForm):
-    validate_numeric = RegexValidator(regex='^[0-9]*$', message='Use only digits')
 
-    age = forms.CharField(max_length=3, required=True, validators=[validate_numeric])
+    # validate_numeric = RegexValidator(regex='^[0-9]*$', message='Use only digits')
+    # age = forms.CharField(max_length=3, required=True, validators=[validate_numeric])
+
+    age = forms.IntegerField(min_value=18, max_value=120, required=True)
 
     class Meta:
         model = User
@@ -40,14 +42,13 @@ class ProfileUserForm(forms.ModelForm):
         pass
 
 
-class LoginForm(forms.ModelForm):
+class SubscriptionForm(forms.ModelForm):
 
-    email = forms.EmailInput()
-    password = forms.CharField(widget=forms.PasswordInput)
+    is_subscribed = forms.BooleanField(label='Subscribe to new goods')
 
     class Meta:
-        model = User
-        fields = ['email', 'password']
+        model = Subscriber
+        fields = ['is_subscribed']
 
 
 class GoodCreateForm(forms.ModelForm):
@@ -100,4 +101,10 @@ class CharacteristicUpdateForm(forms.ModelForm):
     class Meta:
         model = Characteristic
         exclude = ['good', ]
+
+
+class SellerCreateForm(forms.ModelForm):
+    class Meta:
+        model = Seller
+        exclude = ['user', ]
 

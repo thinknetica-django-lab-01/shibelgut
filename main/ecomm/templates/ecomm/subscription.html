@@ -1,0 +1,26 @@
+{% extends 'ecomm/base.html' %}
+
+{% load crispy_forms_filters %}
+
+{% block title %}
+    Subscription
+{% endblock %}
+
+{% block content %}
+
+    {% if is_subscribed %}
+        <div class="row mb-3">
+            <h3>You have been already subscribed.</h3>
+        </div>
+    {% else %}
+        <form action="{% url 'subscription_url' %}" method="post">
+            {% csrf_token %}
+            <div class="row mb-3">
+                {{ form|crispy }}
+            </div>
+            <button type="submit" class="btn btn-primary">Send</button>
+        </form>
+
+    {% endif %}
+
+{% endblock %}
