@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     # 'allauth.socialaccount.providers.twitter',
     # 'allauth.socialaccount.providers.vk',
+    'django_apscheduler',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

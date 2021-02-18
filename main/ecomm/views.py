@@ -8,9 +8,8 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView, CreateView
 from django.utils.decorators import method_decorator
 from ecomm.forms import *
-from ecomm.models import Good, CustomUser, Image, Characteristic, Seller
+from ecomm.models import Good, CustomUser, Image, Characteristic, Seller, Subscriber
 from django.forms import inlineformset_factory
-from django.contrib.auth.forms import UserCreationForm
 from django.core.mail import send_mail, EmailMultiAlternatives
 from main.settings import EMAIL_HOST_USER
 from django.template import loader
@@ -248,6 +247,43 @@ def create_seller(sender, instance, **kwargs):
     sellers_group.user_set.add(instance)
 
     return sellers_group
+
+
+def send_subscription_email(recipient_email, context):
+    template = loader.get_template(template_name='ecomm/emails/goods_subscription.html')
+    html_content = template.render(context=context)
+    msg = EmailMultiAlternatives(
+        subject='Subscription to new goods',
+        body=html_content,
+        from_email=EMAIL_HOST_USER,
+        to=[recipient_email])
+    msg.content_subtype = 'html'
+    msg.send()
+
+
+@login_required
+def get_subscription(request):
+    form = SubscriptionForm()
+
+    context = {
+        'form': form,
+        'current_username': request.user
+    }
+
+    if User.objects.filter(user__is_subscribed=True, id=request.user.id):
+        context['is_subscribed'] = True
+    else:
+        if request.method == 'POST':
+            form = SubscriptionForm(request.POST)
+            if form.is_valid():
+                subscriber, created = Subscriber.objects.get_or_create(user=request.user)
+                if created:
+                    send_subscription_email(request.user.email, {'username': request.user.username})
+                    subscriber.is_subscribed = True
+                    subscriber.save()
+                    return render(request, 'ecomm/subscription_success.html')
+
+    return render(request, 'ecomm/subscription.html', context)
 
 
 @method_decorator(login_required, name='dispatch')
