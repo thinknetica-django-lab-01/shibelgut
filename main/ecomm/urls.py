@@ -12,4 +12,5 @@ urlpatterns = [
     # path('accounts/login/', user_login, name='login_url'),
     path('accounts/', include('allauth.urls')),
     path('accounts/profile/seller/', SellerCreateView.as_view(), name='profile_seller_create_url'),
+    path('goods/subscription/', get_subscription, name='subscription_url'),
 ]

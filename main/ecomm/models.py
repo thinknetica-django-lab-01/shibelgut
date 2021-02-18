@@ -250,3 +250,16 @@ class Seller(models.Model):
         ordering = ['company_name']
         verbose_name = 'Продавец'
         verbose_name_plural = 'Продавцы'
+
+
+class Subscriber(models.Model):
+    is_subscribed = models.BooleanField(default=False, verbose_name='Подписчик')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True,
+                                related_name='user', verbose_name='Пользователь')
+
+    def __str__(self):
+        return self.user.username
+
+    class Meta:
+        verbose_name = 'Подписчик'
+        verbose_name_plural = 'Подписчики'
