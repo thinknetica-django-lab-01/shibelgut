@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     # 'allauth.socialaccount.providers.twitter',
     # 'allauth.socialaccount.providers.vk',
+    'django_apscheduler',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -90,6 +91,15 @@ AUTHENTICATION_BACKENDS = [
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'from@example.com'
+# EMAIL_HOST_PASSWORD = ''
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_USE_SSL = False
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {

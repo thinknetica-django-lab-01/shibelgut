@@ -1,8 +1,8 @@
 from django import forms
-from ecomm.models import User, Good, Image, Characteristic
+from ecomm.models import User, Good, Image, Characteristic, Seller, Subscriber
 from django.core.exceptions import ValidationError
-from django.core.validators import RegexValidator
 from django.forms.models import inlineformset_factory
+from django.core.validators import RegexValidator
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset
@@ -42,14 +42,13 @@ class ProfileUserForm(forms.ModelForm):
         pass
 
 
-# class LoginForm(forms.ModelForm):
-#
-#     email = forms.EmailInput()
-#     password = forms.CharField(widget=forms.PasswordInput)
-#
-#     class Meta:
-#         model = User
-#         fields = ['email', 'password']
+class SubscriptionForm(forms.ModelForm):
+
+    is_subscribed = forms.BooleanField(label='Subscribe to new goods')
+
+    class Meta:
+        model = Subscriber
+        fields = ['is_subscribed']
 
 
 class GoodCreateForm(forms.ModelForm):
@@ -102,4 +101,10 @@ class CharacteristicUpdateForm(forms.ModelForm):
     class Meta:
         model = Characteristic
         exclude = ['good', ]
+
+
+class SellerCreateForm(forms.ModelForm):
+    class Meta:
+        model = Seller
+        exclude = ['user', ]
 
