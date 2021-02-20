@@ -14,6 +14,7 @@ from django.core.mail import send_mail, EmailMultiAlternatives
 from main.settings import EMAIL_HOST_USER
 from django.template import loader
 from ecomm.tasks import send_email_new_goods
+from django.views.decorators.cache import cache_page
 
 from django.conf import settings
 from django.contrib import messages
@@ -58,6 +59,7 @@ class GoodsListView(ListView):
         return queryset
 
 
+@method_decorator(cache_page(60 * 5), name='dispatch')
 class GoodsDetailView(DetailView):
     context_object_name = 'goods'
     queryset = Good.objects.all()
@@ -69,7 +71,6 @@ class GoodsDetailView(DetailView):
         context['characteristic'] = characteristics
         context['image'] = images
         context['current_username'] = self.request.user
-
         return context
 
 
