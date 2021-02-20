@@ -1,6 +1,7 @@
 from celery.utils.log import get_task_logger
 from django.core.mail import EmailMultiAlternatives
 from django.template import loader
+from django.utils import timezone
 from ecomm.models import Subscriber, Good
 from main.celery import app
 from main.settings import EMAIL_HOST_USER
@@ -37,4 +38,12 @@ def send_email_new_goods(goods_title):
         msg.content_subtype = 'html'
         msg.send()
         print('Email about new goods has been sent')
+
+
+@app.task
+def send_periodic_tasks():
+    today = timezone.now()
+    week_ago = today - timezone.timedelta(days=7)
+    goods_title = [good.title for good in list(Good.objects.filter(pub_date__lte=week_ago))]
+    send_email_new_goods.s(goods_title)
 

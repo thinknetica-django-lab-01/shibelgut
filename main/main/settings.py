@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     # 'allauth.socialaccount.providers.vk',
     'django_apscheduler',
     'django_celery_results',
+    'django_celery_beat',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
