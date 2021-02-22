@@ -53,6 +53,7 @@ class Good(models.Model):
     # is_available = models.BooleanField(default=False, verbose_name='Наличие товара', db_index=True)
     # shipping_charge = models.DecimalField(default=0, max_digits=7, decimal_places=2, db_index=True)
     rating = models.IntegerField(null=True, verbose_name='Рэйтинг товара', blank=True, db_index=True)
+    counter = models.IntegerField(default=0, verbose_name='Количество просмотров')
 
     # def __init__(self, shipping_percent, commission_percent, *args, **kwargs):
     #     self.__shipping = shipping_percent
