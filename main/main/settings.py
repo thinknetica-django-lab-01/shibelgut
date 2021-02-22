@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -51,11 +52,15 @@ INSTALLED_APPS = [
     # 'allauth.socialaccount.providers.twitter',
     # 'allauth.socialaccount.providers.vk',
     'django_apscheduler',
+    'django_celery_results',
+    'django_celery_beat',
+    'debug_toolbar',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -64,6 +69,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+]
+
+INTERNAL_IPS = [
+    '127.0.0.1',
 ]
 
 ROOT_URLCONF = 'main.urls'
@@ -94,15 +103,21 @@ AUTHENTICATION_BACKENDS = [
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# EMAIL_HOST = 'smtp.gmail.com'
+# Email settings
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
 EMAIL_HOST_USER = 'from@example.com'
-# EMAIL_HOST_PASSWORD = ''
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_USE_SSL = False
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = os.environ.get('EMAIL_PORT')
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')
+EMAIL_USE_SSL = os.environ.get('EMAIL_USE_SSL')
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
+        'APP': {
+            'client_id': os.environ.get('GOOGLE_CLIENT_ID'),
+            'secret': os.environ.get('GOOGLE_SECRET'),
+            'key': '',
+        },
         'SCOPE': [
             'profile',
             'email',
@@ -158,7 +173,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tomsk'
 
 USE_I18N = True
 
@@ -179,5 +194,25 @@ STATICFILES_DIRS = [STATIC_DIR]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media/'
 
-
+# ckeditor image uploads setting
 CKEDITOR_UPLOAD_PATH = 'uploads/'
+
+# Celery configuration options
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Tomsk'
+
+# Caches
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+

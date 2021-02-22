@@ -1,5 +1,6 @@
 import os
 from celery import Celery
+from celery.schedules import crontab
 
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'main.settings')
@@ -11,6 +12,13 @@ app = Celery('main')
 #   should have a `CELERY_` prefix.
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
+app.conf.beat_schedule = {
+    'send_email_new_goods-every-friday': {
+        'task': 'ecomm.tasks.send_periodic_tasks',
+        'schedule': crontab(hour=9, minute=0, day_of_week=5),
+    },
+}
+
 # Load task modules from all registered Django app configs.
 app.autodiscover_tasks()
 
@@ -18,3 +26,4 @@ app.autodiscover_tasks()
 @app.task(bind=True)
 def debug_task(self):
     print(f'Request: {self.request!r}')
+
