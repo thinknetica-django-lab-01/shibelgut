@@ -44,6 +44,6 @@ def send_email_new_goods(goods_title):
 def send_periodic_tasks():
     today = timezone.now()
     week_ago = today - timezone.timedelta(days=7)
-    goods_title = [good.title for good in list(Good.objects.filter(pub_date__lte=week_ago))]
+    goods_title = [good.title for good in list(Good.objects.filter(pub_date__gte=week_ago))]
     send_email_new_goods.s(goods_title)
 
