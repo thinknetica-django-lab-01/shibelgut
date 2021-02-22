@@ -5,7 +5,14 @@
     <title>New goods</title>
 </head>
 <body>
-    <h3>Hello, {{ username }}!</h3>
-    <h3>We invite you to visit our website {{ site_name }} to learn about new goods.</h3>
+<h3>Hello, {{ username }}!</h3>
+<h3>We invite you to visit our website {{ site_name }} to learn about new goods:</h3>
+<li>
+    {% for good in goods %}
+    <ul>
+        {{ good }}
+    </ul>
+    {% endfor %}
+</li>
 </body>
 </html>
