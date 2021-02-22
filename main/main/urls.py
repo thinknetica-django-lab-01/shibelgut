@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
-import debug_toolbar
+
 
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin_url'),
@@ -25,7 +25,8 @@ urlpatterns = [
     path('contacts/', include('django.contrib.flatpages.urls')),
     # path('ckeditor/', include('ckeditor_uploader.urls')),
     path('/', include('django.contrib.flatpages.urls'), name='main_url'),
-    path('__debug__/', include(debug_toolbar.urls)),
 ]
-
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += path('__debug__/', include(debug_toolbar.urls)),
 
