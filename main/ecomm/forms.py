@@ -54,7 +54,7 @@ class SubscriptionForm(forms.ModelForm):
 class GoodCreateForm(forms.ModelForm):
     class Meta:
         model = Good
-        exclude = ['pub_date', 'seller', 'rating']
+        exclude = ['pub_date', 'rating']
 
     @property
     def helper(self):
@@ -62,7 +62,7 @@ class GoodCreateForm(forms.ModelForm):
         helper.form_tag = False
 
         helper.layout = Layout(Fieldset('Create a new good', 'title', 'price', 'description', 'brand', 'quantity',
-                                        'issue_date', 'vendor_code', 'tag'), )
+                                        'issue_date', 'vendor_code', 'tag', 'seller'), )
 
         return helper
 

@@ -13,6 +13,9 @@ from django.forms import inlineformset_factory
 from django.core.mail import send_mail, EmailMultiAlternatives
 from main.settings import EMAIL_HOST_USER
 from django.template import loader
+from ecomm.tasks import send_email_new_goods
+from django.core.cache import cache
+from django.views.decorators.cache import cache_page
 
 from django.conf import settings
 from django.contrib import messages
@@ -57,18 +60,22 @@ class GoodsListView(ListView):
         return queryset
 
 
+# @method_decorator(cache_page(60 * 5), name='dispatch')
 class GoodsDetailView(DetailView):
     context_object_name = 'goods'
     queryset = Good.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
+        self.object.counter += 1
+        self.object.save()
         characteristics = Characteristic.objects.get(good_id=self.kwargs.get('pk'))
         images = Image.objects.get(good_id=self.kwargs.get('pk'))
+        counter = cache.get_or_set(f'{self.object.pk}_counter', self.object.counter, 60)
         context['characteristic'] = characteristics
         context['image'] = images
         context['current_username'] = self.request.user
-
+        context['counter'] = counter
         return context
 
 
@@ -117,17 +124,17 @@ class GoodCreateView(PermissionRequiredMixin, CreateView):
         characteristic_form = CharacteristicFormset(self.request.POST)
         image_form = ImageFormset(self.request.POST)
 
-        if form.is_valid() and characteristic_form.is_valid() and image_form.is_valid():
-            return self.form_valid(form, characteristic_form, image_form)
+        if form.is_valid():
+            return self.form_valid(form)
 
-        return self.form_valid(form, characteristic_form, image_form)
+        return self.form_valid(form)
 
-    def form_valid(self, form, characteristic_form, image_form):
+    def form_valid(self, form):
         self.object = form.save()
-        characteristic_form.instance = self.object
-        characteristic_form.save()
-        image_form.instance = self.object
-        image_form.save()
+        # characteristic_form.instance = self.object
+        # characteristic_form.save()
+        # image_form.instance = self.object
+        # image_form.save()
 
         return redirect(self.get_success_url())
 
@@ -234,6 +241,13 @@ def create_user(sender, instance, created, **kwargs):
         instance.groups.add(create_common_users_group())
 
         send_confirmation_email([instance.email, ], {'recipient_email': instance.email})
+
+
+@receiver(post_save, sender=Good)
+def create_new_goods(sender, instance, created, **kwargs):
+    if created:
+        goods = Good.objects.get(pk=instance.id)
+        send_email_new_goods.delay(goods.title)
 
 
 @receiver(post_save, sender=Seller)
