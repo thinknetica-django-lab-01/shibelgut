@@ -1,13 +1,15 @@
-from django.db import models
-from django.shortcuts import reverse
-from datetime import datetime, date
+from datetime import datetime
+
 from django.contrib.auth.models import User
+from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.shortcuts import reverse
 
 
 class Category(models.Model):
-    title = models.CharField(max_length=150, verbose_name='Наименование категории', blank=False, db_index=True)
+    title = models.CharField(max_length=150, verbose_name='Наименование категории',
+                             blank=False, db_index=True)
 
     def __str__(self):
         return '{}'.format(self.title)
@@ -22,8 +24,10 @@ class Category(models.Model):
 
 
 class Tag(models.Model):
-    title = models.CharField(max_length=150, verbose_name='Наименование тэга', blank=False, db_index=True)
-    category = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='tags', verbose_name='Категория')
+    title = models.CharField(max_length=150, verbose_name='Наименование тэга',
+                             blank=False, db_index=True)
+    category = models.ForeignKey('Category', on_delete=models.CASCADE,
+                                 related_name='tags', verbose_name='Категория')
 
     def __str__(self):
         return '{}'.format(self.title)
@@ -38,21 +42,31 @@ class Tag(models.Model):
 
 
 class Good(models.Model):
-    title = models.CharField(max_length=150, verbose_name='Наименование товара', blank=False, db_index=True)
-    price = models.DecimalField(max_digits=7, decimal_places=2, verbose_name='Стоимость товара',
-                                blank=False, db_index=True)
-    description = models.TextField(max_length=500, verbose_name='Описание товара', blank=False)
-    brand = models.CharField(max_length=150, verbose_name='Брэнд', blank=False, db_index=True)
+    title = models.CharField(max_length=150, verbose_name='Наименование товара',
+                             blank=False, db_index=True)
+    price = models.DecimalField(max_digits=7, decimal_places=2,
+                                verbose_name='Стоимость товара', blank=False, db_index=True)
+    description = models.TextField(max_length=500, verbose_name='Описание товара',
+                                   blank=False)
+    brand = models.CharField(max_length=150, verbose_name='Брэнд', blank=False,
+                             db_index=True)
     quantity = models.IntegerField(verbose_name='Количество')
-    issue_date = models.DateField(null=True, verbose_name='Дата изготовления', blank=True, db_index=True)
-    vendor_code = models.CharField(null=True, max_length=254, verbose_name='Артикул товара', blank=False, db_index=True)
-    pub_date = models.DateTimeField(auto_now_add=True, null=True, verbose_name='Дата опубликования', db_index=True)
-    tag = models.ForeignKey('Tag', on_delete=models.CASCADE, related_name='goods', verbose_name='Тэг')
-    seller = models.ForeignKey('Seller', on_delete=models.CASCADE, related_name='goods', blank=True,
-                               verbose_name='Продавец')
-    # is_available = models.BooleanField(default=False, verbose_name='Наличие товара', db_index=True)
-    # shipping_charge = models.DecimalField(default=0, max_digits=7, decimal_places=2, db_index=True)
-    rating = models.IntegerField(null=True, verbose_name='Рэйтинг товара', blank=True, db_index=True)
+    issue_date = models.DateField(null=True, verbose_name='Дата изготовления',
+                                  blank=True, db_index=True)
+    vendor_code = models.CharField(null=True, max_length=254, verbose_name='Артикул товара',
+                                   blank=False, db_index=True)
+    pub_date = models.DateTimeField(auto_now_add=True, null=True,
+                                    verbose_name='Дата опубликования', db_index=True)
+    tag = models.ForeignKey('Tag', on_delete=models.CASCADE, related_name='goods',
+                            verbose_name='Тэг')
+    seller = models.ForeignKey('Seller', on_delete=models.CASCADE, related_name='goods',
+                               blank=True, verbose_name='Продавец')
+    # is_available = models.BooleanField(default=False, verbose_name='Наличие товара',
+    #                                    db_index=True)
+    # shipping_charge = models.DecimalField(default=0, max_digits=7, decimal_places=2,
+    #                                       db_index=True)
+    rating = models.IntegerField(null=True, verbose_name='Рэйтинг товара', blank=True,
+                                 db_index=True)
     counter = models.IntegerField(default=0, verbose_name='Количество просмотров')
 
     # def __init__(self, shipping_percent, commission_percent, *args, **kwargs):
@@ -120,7 +134,8 @@ class Image(models.Model):
     image_3 = models.ImageField(upload_to=upload_path, verbose_name='Фото 3', null=True)
     image_4 = models.ImageField(upload_to=upload_path, verbose_name='Фото 4', null=True)
     image_5 = models.ImageField(upload_to=upload_path, verbose_name='Фото 5', null=True)
-    good = models.OneToOneField(Good, on_delete=models.CASCADE, related_name='images', verbose_name='Товар')
+    good = models.OneToOneField(Good, on_delete=models.CASCADE,
+                                related_name='images', verbose_name='Товар')
 
     class Meta:
         verbose_name = 'Изображение'
@@ -133,8 +148,8 @@ class Characteristic(models.Model):
     length = models.DecimalField(max_digits=7, decimal_places=2, null=True)
     width = models.DecimalField(max_digits=7, decimal_places=2, null=True)
     height = models.DecimalField(max_digits=7, decimal_places=2, null=True)
-    good = models.OneToOneField(Good, on_delete=models.CASCADE, related_name='characteristics',
-                                verbose_name='Товар')
+    good = models.OneToOneField(Good, on_delete=models.CASCADE,
+                                related_name='characteristics', verbose_name='Товар')
 
     def __str__(self):
         return 'Color: {}'.format(self.color)
@@ -152,24 +167,31 @@ class CustomUser(models.Model):
         (SELLER, 'Продавец'),
         (CUSTOMER, 'Покупатель'),
     )
-    role = models.CharField(max_length=1, choices=ROLE_CHOICES, null=True, blank=True, verbose_name='Роль',
-                            db_index=True)
-    num_failed_logins = models.IntegerField(null=True, verbose_name='Количество неудачных входов')
+    role = models.CharField(max_length=1, choices=ROLE_CHOICES, null=True, blank=True,
+                            verbose_name='Роль', db_index=True)
+    num_failed_logins = models.IntegerField(null=True,
+                                            verbose_name='Количество неудачных входов')
     upload_path = 'users/'
-    photo = models.ImageField(upload_to=upload_path, verbose_name='Фото профиля', null=True)
-    phone = models.CharField(max_length=150, verbose_name='Телефон', null=True, blank=True, unique=True)
-    birthday = models.DateField(verbose_name='День рождения', null=True, blank=True, db_index=True)
+    photo = models.ImageField(upload_to=upload_path, verbose_name='Фото профиля',
+                              null=True)
+    phone = models.CharField(max_length=150, verbose_name='Телефон', null=True,
+                             blank=True, unique=True)
+    birthday = models.DateField(verbose_name='День рождения', null=True,
+                                blank=True, db_index=True)
     MAN = 'M'
     FEMALE = 'F'
     GENDER_CHOICES = (
         (MAN, 'Мужской'),
         (FEMALE, 'Женский'),
     )
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default=MAN, null=True, blank=True,
-                              verbose_name='Пол', db_index=True)
-    country = models.CharField(max_length=150, null=True, blank=True, verbose_name='Страна', db_index=True)
-    city = models.CharField(max_length=150, null=True, blank=True, verbose_name='Город', db_index=True)
-    address = models.CharField(max_length=150, null=True, blank=True, verbose_name='Адрес', db_index=True)
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default=MAN,
+                              null=True, blank=True, verbose_name='Пол', db_index=True)
+    country = models.CharField(max_length=150, null=True, blank=True,
+                               verbose_name='Страна', db_index=True)
+    city = models.CharField(max_length=150, null=True, blank=True,
+                            verbose_name='Город', db_index=True)
+    address = models.CharField(max_length=150, null=True, blank=True,
+                               verbose_name='Адрес', db_index=True)
 
     def __str__(self):
         return 'Username: {}'.format(self.user.username)
@@ -197,9 +219,10 @@ def save_user_customuser(sender, instance, **kwargs):
 class Review(models.Model):
     text = models.TextField(max_length=500, blank=False)
     date = models.DateTimeField(auto_now_add=True, null=True, db_index=True)
-    good = models.ForeignKey('Good', on_delete=models.CASCADE, related_name='reviews', blank=True, verbose_name='Товар')
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='reviews',
-                                blank=True, verbose_name='Пользователь')
+    good = models.ForeignKey('Good', on_delete=models.CASCADE,
+                             related_name='reviews', blank=True, verbose_name='Товар')
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE,
+                                related_name='reviews', blank=True, verbose_name='Пользователь')
 
     def __str__(self):
         return 'Username: {}'.format(self.user.user.username)
@@ -213,10 +236,12 @@ class Review(models.Model):
 
 
 class Customer(models.Model):
-    goods = models.ManyToManyField('Good', related_name='customers', blank=True, verbose_name='Товары')
-    purchase_date = models.DateTimeField(default=datetime.now, null=True, verbose_name='Дата покупки', db_index=True)
-    customuser = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='customer',
-                                      verbose_name='Пользователь')
+    goods = models.ManyToManyField('Good', related_name='customers',
+                                   blank=True, verbose_name='Товары')
+    purchase_date = models.DateTimeField(default=datetime.now, null=True,
+                                         verbose_name='Дата покупки', db_index=True)
+    customuser = models.OneToOneField(CustomUser, on_delete=models.CASCADE,
+                                      related_name='customer', verbose_name='Пользователь')
 
     def __str__(self):
         return 'Username: {}'.format(self.customuser.user.username)
@@ -230,15 +255,16 @@ class Customer(models.Model):
 
 
 class Seller(models.Model):
-    company_name = models.CharField(max_length=150, null=True, verbose_name='Название компании',
-                                    blank=False, db_index=True)
-    legal_entity = models.CharField(max_length=150, null=True, verbose_name='Юридическое лицо',
-                                    blank=False, db_index=True)
-    manufacturer = models.CharField(max_length=150, null=True, verbose_name='Производитель', db_index=True)
-    manufacturer_country = models.CharField(max_length=150, null=True, verbose_name='Страна происхождения',
-                                            db_index=True)
-    customuser = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='seller',
-                                      verbose_name='Пользователь')
+    company_name = models.CharField(max_length=150, null=True,
+                                    verbose_name='Название компании', blank=False, db_index=True)
+    legal_entity = models.CharField(max_length=150, null=True,
+                                    verbose_name='Юридическое лицо', blank=False, db_index=True)
+    manufacturer = models.CharField(max_length=150, null=True,
+                                    verbose_name='Производитель', db_index=True)
+    manufacturer_country = models.CharField(max_length=150, null=True,
+                                            verbose_name='Страна происхождения', db_index=True)
+    customuser = models.OneToOneField(CustomUser, on_delete=models.CASCADE,
+                                      related_name='seller', verbose_name='Пользователь')
 
     def __str__(self):
         return 'Username: {}'.format(self.customuser.user.username)
@@ -254,7 +280,8 @@ class Seller(models.Model):
 
 class Subscriber(models.Model):
     is_subscribed = models.BooleanField(default=False, verbose_name='Подписчик')
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user', verbose_name='Пользователь')
+    user = models.OneToOneField(User, on_delete=models.CASCADE,
+                                related_name='user', verbose_name='Пользователь')
 
     def __str__(self):
         return self.user.username

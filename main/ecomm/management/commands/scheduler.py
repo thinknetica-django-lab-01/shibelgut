@@ -1,8 +1,10 @@
 import logging
+
 from apscheduler.schedulers.blocking import BlockingScheduler
-from django.core.management import BaseCommand
-from ecomm.sending_email import send_email_by_scheduler
 from django.conf import settings
+from django.core.management import BaseCommand
+
+from ecomm.sending_email import send_email_by_scheduler
 
 logger = logging.getLogger(__name__)
 

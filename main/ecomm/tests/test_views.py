@@ -1,6 +1,7 @@
 from django.test import TestCase
-from ecomm.models import Good, Tag, Category, CustomUser, Seller, User, Characteristic, Image
 from django.urls import resolve
+
+from ecomm.models import Category, Characteristic, CustomUser, Good, Image, Seller, Tag, User
 
 
 class GoodsListViewTest(TestCase):
@@ -39,7 +40,7 @@ class GoodsListViewTest(TestCase):
         self.assertTrue(len(resp.context['object_list']) == 10)
 
     def test_lists_all_goods(self):
-        resp = self.client.get('/goods/'+'?tag=&page=2')
+        resp = self.client.get('/goods/' + '?tag=&page=2')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] is True)
@@ -54,7 +55,8 @@ class GoodsDetailViewTest(TestCase):
         self.user = User.objects.create_user(username='test_user')
         self.customuser = CustomUser.objects.get(id=self.user.id)
         self.seller = Seller.objects.create(customuser=self.customuser)
-        self.test_good = Good.objects.create(title='test_good', price=1, quantity=1, tag=self.tag, seller=self.seller)
+        self.test_good = Good.objects.create(title='test_good', price=1,
+                                             quantity=1, tag=self.tag, seller=self.seller)
         self.characteristic = Characteristic.objects.create(good=self.test_good)
         self.image = Image.objects.create(good=self.test_good)
 
@@ -65,4 +67,3 @@ class GoodsDetailViewTest(TestCase):
     def test_counter_is_represented(self):
         resp = self.client.get(f'/goods/{self.test_good.id}/')
         self.assertTrue(resp.context['counter'] != 0)
-

@@ -38,4 +38,3 @@ def test_redirect_logout(client, good):
     response = client.get(f'/goods/{good.id}/edit/')
     assert response.status_code == 302
     assert response.url.startswith('/accounts/login/')
-
