@@ -120,8 +120,7 @@ class Image(models.Model):
     image_3 = models.ImageField(upload_to=upload_path, verbose_name='Фото 3', null=True)
     image_4 = models.ImageField(upload_to=upload_path, verbose_name='Фото 4', null=True)
     image_5 = models.ImageField(upload_to=upload_path, verbose_name='Фото 5', null=True)
-    good = models.OneToOneField(Good, on_delete=models.CASCADE, primary_key=True, related_name='images',
-                                verbose_name='Товар')
+    good = models.OneToOneField(Good, on_delete=models.CASCADE, related_name='images', verbose_name='Товар')
 
     class Meta:
         verbose_name = 'Изображение'
@@ -134,7 +133,7 @@ class Characteristic(models.Model):
     length = models.DecimalField(max_digits=7, decimal_places=2, null=True)
     width = models.DecimalField(max_digits=7, decimal_places=2, null=True)
     height = models.DecimalField(max_digits=7, decimal_places=2, null=True)
-    good = models.OneToOneField(Good, on_delete=models.CASCADE, primary_key=True, related_name='characteristics',
+    good = models.OneToOneField(Good, on_delete=models.CASCADE, related_name='characteristics',
                                 verbose_name='Товар')
 
     def __str__(self):
@@ -199,7 +198,7 @@ class Review(models.Model):
     text = models.TextField(max_length=500, blank=False)
     date = models.DateTimeField(auto_now_add=True, null=True, db_index=True)
     good = models.ForeignKey('Good', on_delete=models.CASCADE, related_name='reviews', blank=True, verbose_name='Товар')
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True, related_name='reviews',
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='reviews',
                                 blank=True, verbose_name='Пользователь')
 
     def __str__(self):
@@ -216,14 +215,14 @@ class Review(models.Model):
 class Customer(models.Model):
     goods = models.ManyToManyField('Good', related_name='customers', blank=True, verbose_name='Товары')
     purchase_date = models.DateTimeField(default=datetime.now, null=True, verbose_name='Дата покупки', db_index=True)
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True, related_name='customer',
-                                verbose_name='Пользователь')
+    customuser = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='customer',
+                                      verbose_name='Пользователь')
 
     def __str__(self):
-        return 'Username: {}'.format(self.user.user.username)
+        return 'Username: {}'.format(self.customuser.user.username)
 
     def get_absolute_url(self):
-        return '/%i/' % self.user.user.pk
+        return '/%i/' % self.customuser.user.pk
 
     class Meta:
         verbose_name = 'Покупатель'
@@ -238,14 +237,14 @@ class Seller(models.Model):
     manufacturer = models.CharField(max_length=150, null=True, verbose_name='Производитель', db_index=True)
     manufacturer_country = models.CharField(max_length=150, null=True, verbose_name='Страна происхождения',
                                             db_index=True)
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True,
-                                related_name='seller', verbose_name='Пользователь')
+    customuser = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='seller',
+                                      verbose_name='Пользователь')
 
     def __str__(self):
-        return 'Username: {}'.format(self.user.user.username)
+        return 'Username: {}'.format(self.customuser.user.username)
 
     def get_absolute_url(self):
-        return '/%i/' % self.user.user.pk
+        return '/%i/' % self.customuser.user.pk
 
     class Meta:
         ordering = ['company_name']
@@ -255,8 +254,7 @@ class Seller(models.Model):
 
 class Subscriber(models.Model):
     is_subscribed = models.BooleanField(default=False, verbose_name='Подписчик')
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True,
-                                related_name='user', verbose_name='Пользователь')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user', verbose_name='Пользователь')
 
     def __str__(self):
         return self.user.username

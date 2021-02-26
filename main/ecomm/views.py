@@ -253,14 +253,10 @@ def create_new_goods(sender, instance, created, **kwargs):
 @receiver(post_save, sender=Seller)
 def create_seller(sender, instance, **kwargs):
     sellers_group, created = Group.objects.get_or_create(name='Sellers')
+    instance.customuser.user.groups.add(sellers_group)
     if created:
-        list_permissions = list(
-            Permission.objects.filter(codename__icontains='good').exclude(codename__icontains='delete_good'))
-        for perm in list_permissions:
-            sellers_group.permissions.add(perm)
-    sellers_group.user_set.add(instance)
-
-    return sellers_group
+        permissions_queryset = Permission.objects.filter(codename__icontains='good').exclude(codename__icontains='delete_good')
+        sellers_group.permissions.set(permissions_queryset)
 
 
 def send_subscription_email(recipient_email, context):
