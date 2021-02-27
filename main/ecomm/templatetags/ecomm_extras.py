@@ -1,7 +1,9 @@
+import datetime
+
 from django import template
 from django.template.defaultfilters import stringfilter
-import datetime
 import pytz
+
 
 register = template.Library()
 

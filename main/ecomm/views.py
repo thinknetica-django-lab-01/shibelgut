@@ -1,28 +1,21 @@
-from django.contrib.auth.models import User, Group, Permission
-from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import Group, Permission
+from django.core.cache import cache
+from django.core.mail import EmailMultiAlternatives
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, DetailView
-from django.views.generic.edit import UpdateView, CreateView
-from django.utils.decorators import method_decorator
-from ecomm.forms import *
-from ecomm.models import Good, CustomUser, Image, Characteristic, Seller, Subscriber
 from django.forms import inlineformset_factory
-from django.core.mail import send_mail, EmailMultiAlternatives
-from main.settings import EMAIL_HOST_USER
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template import loader
-from ecomm.tasks import send_email_new_goods
-from django.core.cache import cache
-from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
+from django.views.generic import DetailView, ListView
+from django.views.generic.edit import CreateView, UpdateView
+from main.settings import EMAIL_HOST_USER
 
-from django.conf import settings
-from django.contrib import messages
-from django.contrib.auth import login as auth_login, logout as auth_logout, REDIRECT_FIELD_NAME
-from django.views.decorators.debug import sensitive_post_parameters
-from django.views.decorators.cache import never_cache
-from django.views.decorators.csrf import csrf_protect
+from ecomm.forms import *
+from ecomm.models import Characteristic, CustomUser, Good, Image, Seller, Subscriber
+from ecomm.tasks import send_email_new_goods
 
 
 def index(request):
@@ -95,8 +88,6 @@ class ProfileUserUpdate(UpdateView):
         return self.request.user
 
     def form_valid(self, form):
-        clean = form.cleaned_data
-        context = {}
         return super(ProfileUserUpdate, self).form_valid(form)
 
 
@@ -121,8 +112,8 @@ class GoodCreateView(PermissionRequiredMixin, CreateView):
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-        characteristic_form = CharacteristicFormset(self.request.POST)
-        image_form = ImageFormset(self.request.POST)
+        # characteristic_form = CharacteristicFormset(self.request.POST)
+        # image_form = ImageFormset(self.request.POST)
 
         if form.is_valid():
             return self.form_valid(form)
@@ -178,8 +169,12 @@ class GoodUpdateView(PermissionRequiredMixin, UserPassesTestMixin, UpdateView):
         good = get_object_or_404(Good, pk=self.kwargs.get('pk'))
 
         good_form = GoodUpdateForm(instance=good)
-        CharacteristicFormset = inlineformset_factory(Good, Characteristic, exclude=('good',), can_delete=False, max_num=5)
-        ImageFormset = inlineformset_factory(Good, Image, exclude=('good',), can_delete=False, max_num=5)
+        CharacteristicFormset = inlineformset_factory(
+            Good, Characteristic, exclude=('good',), can_delete=False, max_num=5
+        )
+        ImageFormset = inlineformset_factory(
+            Good, Image, exclude=('good',), can_delete=False, max_num=5
+        )
         characteristic_formset = CharacteristicFormset(instance=good)
         image_formset = ImageFormset(instance=good)
 
@@ -194,8 +189,12 @@ class GoodUpdateView(PermissionRequiredMixin, UserPassesTestMixin, UpdateView):
 
             if good_form.is_valid():
                 created_good = good_form.save(commit=False)
-                characteristic_formset = CharacteristicFormset(self.request.POST, self.request.FILES, instance=created_good)
-                image_formset = ImageFormset(self.request.POST, self.request.FILES, instance=created_good)
+                characteristic_formset = CharacteristicFormset(
+                    self.request.POST, self.request.FILES, instance=created_good
+                )
+                image_formset = ImageFormset(
+                    self.request.POST, self.request.FILES, instance=created_good
+                )
 
                 if characteristic_formset.is_valid() and image_formset.is_valid():
                     created_good.save()
@@ -230,7 +229,9 @@ def send_confirmation_email(recipient_email, context):
 def create_common_users_group():
     common_users_group, created = Group.objects.get_or_create(name='Common Users')
     if created:
-        common_users_group.permissions.add(Permission.objects.get(codename__icontains='view_good'))
+        common_users_group.permissions.add(
+            Permission.objects.get(codename__icontains='view_good')
+        )
 
     return common_users_group
 
@@ -255,7 +256,8 @@ def create_seller(sender, instance, **kwargs):
     sellers_group, created = Group.objects.get_or_create(name='Sellers')
     instance.customuser.user.groups.add(sellers_group)
     if created:
-        permissions_queryset = Permission.objects.filter(codename__icontains='good').exclude(codename__icontains='delete_good')
+        permissions_queryset = Permission.objects.filter(
+            codename__icontains='good').exclude(codename__icontains='delete_good')
         sellers_group.permissions.set(permissions_queryset)
 
 
@@ -364,7 +366,8 @@ class SellerCreateView(CreateView):
 #             else:
 #                 if user.is_active:
 #                     if user.check_password(clean_data['password']):
-#                         auth_login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+#                         auth_login(request, user,
+#                                    backend='django.contrib.auth.backends.ModelBackend')
 #                         if redirect_to == '':
 #                             return redirect('/')
 #                         return redirect(redirect_to)
@@ -387,4 +390,3 @@ class SellerCreateView(CreateView):
 # def user_logout(request):
 #     auth_logout(request)
 #     return redirect('/')
-

@@ -1,6 +1,7 @@
-from django.test import TestCase
-from ecomm.models import Category, Tag, Good, User, CustomUser, Seller
 from django.core.exceptions import ValidationError
+from django.test import TestCase
+
+from ecomm.models import Category, CustomUser, Good, Seller, Tag, User
 
 
 class GoodModelTest(TestCase):
@@ -66,4 +67,3 @@ class CustomUserModelTest(TestCase):
         User.objects.create_user(username='test_user')
         customuser = CustomUser.objects.first()
         self.assertEqual(str(customuser.user), 'test_user')
-

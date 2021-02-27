@@ -1,11 +1,10 @@
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Fieldset, Layout
 from django import forms
-from ecomm.models import User, Good, Image, Characteristic, Seller, Subscriber
 from django.core.exceptions import ValidationError
 from django.forms.models import inlineformset_factory
-from django.core.validators import RegexValidator
 
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Fieldset
+from ecomm.models import Characteristic, Good, Image, Seller, Subscriber, User
 
 
 class ProfileUserForm(forms.ModelForm):
@@ -61,8 +60,9 @@ class GoodCreateForm(forms.ModelForm):
         helper = FormHelper()
         helper.form_tag = False
 
-        helper.layout = Layout(Fieldset('Create a new good', 'title', 'price', 'description', 'brand', 'quantity',
-                                        'issue_date', 'vendor_code', 'tag', 'seller'), )
+        helper.layout = Layout(Fieldset('Create a new good', 'title', 'price',
+                                        'description', 'brand', 'quantity', 'issue_date',
+                                        'vendor_code', 'tag', 'seller'), )
 
         return helper
 
@@ -71,18 +71,22 @@ class CharacteristicFormHelper(FormHelper):
     def __init__(self, *args, **kwargs):
         super(CharacteristicFormHelper, self).__init__(*args, **kwargs)
         self.form_tag = False
-        self.layout = Layout(Fieldset('Add the good characteristics', 'color', 'size', 'length', 'width', 'height'), )
+        self.layout = Layout(Fieldset('Add the good characteristics', 'color',
+                                      'size', 'length', 'width', 'height'), )
 
 
 class ImageFormHelper(FormHelper):
     def __init__(self, *args, **kwargs):
         super(ImageFormHelper, self).__init__(*args, **kwargs)
         self.form_tag = False
-        self.layout = Layout(Fieldset('Add the good images', 'image_1', 'image_2', 'image_3', 'image_4', 'image_5'), )
+        self.layout = Layout(Fieldset('Add the good images', 'image_1', 'image_2',
+                                      'image_3', 'image_4', 'image_5'), )
 
 
-CharacteristicFormset = inlineformset_factory(Good, Characteristic, exclude=('good', ), can_delete=False, extra=1)
-ImageFormset = inlineformset_factory(Good, Image, exclude=('good', ), can_delete=False, extra=1)
+CharacteristicFormset = inlineformset_factory(Good, Characteristic,
+                                              exclude=('good', ), can_delete=False, extra=1)
+ImageFormset = inlineformset_factory(Good, Image, exclude=('good', ),
+                                     can_delete=False, extra=1)
 
 
 class GoodUpdateForm(forms.ModelForm):
@@ -107,4 +111,3 @@ class SellerCreateForm(forms.ModelForm):
     class Meta:
         model = Seller
         exclude = ['user', ]
-
