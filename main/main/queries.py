@@ -1,7 +1,8 @@
 from ecomm.models import Good, Category
 
 
-g1 = Good(name='Laptop', price=1230, description='New model of laptop', rating=4, brand='Sony', is_available=True)
+g1 = Good(name='Laptop', price=1230, description='New model of laptop',
+          rating=4, brand='Sony', is_available=True)
 g1.id
 g1.name
 # 'Laptop'
@@ -12,7 +13,9 @@ g1.brand
 g1.save()
 g1.id
 # 1
-g2 = Good.objects.create(name='Headphone', price=22, description='Wireless headphone', rating=5, brand='Xiaomi', is_available=True)
+g2 = Good.objects.create(name='Headphone', price=22,
+                         description='Wireless headphone', rating=5,
+                         brand='Xiaomi', is_available=True)
 g2.id
 # 2
 g1
@@ -46,7 +49,9 @@ cat1.goods.all()
 g2.categories.add(cat1)
 g2.categories.all()
 # <QuerySet [<Category: Electronic>]>
-g1 = Good(name='Refrigerator', price=599.99, description='Refrigerator with new sytem NoFrost', rating=3, brand='Samsung', is_available=True)
+g1 = Good(name='Refrigerator', price=599.99,
+          description='Refrigerator with new sytem NoFrost',
+          rating=3, brand='Samsung', is_available=True)
 g1
 # <Good: Refrigerator>
 g1.name
@@ -83,7 +88,18 @@ good_tv.categories.add(cat1)
 good_tv.categories.all()
 # <QuerySet [<Category: Electronic>]>
 Good.objects.values()
-# <QuerySet [{'id': 1, 'name': 'Laptop', 'price': Decimal('1230.00'), 'description': 'New model of laptop', 'rating': 4, 'brand': 'Sony', 'is_available': True}, {'id': 2, 'name': 'Headphone', 'price': Decimal('22.00'), 'description': 'Wireless headphone', 'rating': 5, 'brand': 'Xiaomi', 'is_available': True}, {'id': 3, 'name': 'TV', 'price': Decimal('799.99'), 'description': 'Screen diagonal is 120 inches', 'rating': 4, 'brand': 'LG', 'is_available': False}, {'id': 4, 'name': 'Refrigerator', 'price': Decimal('599.99'), 'description': 'Refrigerator with new sytem NoFrost', 'rating': 3, 'brand': 'Samsung', 'is_available': True}]>
+# <QuerySet [{'id': 1, 'name': 'Laptop', 'price': Decimal('1230.00'),
+# 'description': 'New model of laptop', 'rating': 4, 'brand': 'Sony',
+# 'is_available': True},
+# {'id': 2, 'name': 'Headphone', 'price': Decimal('22.00'),
+# 'description': 'Wireless headphone', 'rating': 5, 'brand': 'Xiaomi',
+# 'is_available': True},
+# {'id': 3, 'name': 'TV', 'price': Decimal('799.99'),
+# 'description': 'Screen diagonal is 120 inches', 'rating': 4, 'brand': 'LG',
+# 'is_available': False},
+# {'id': 4, 'name': 'Refrigerator', 'price': Decimal('599.99'),
+# 'description': 'Refrigerator with new sytem NoFrost', 'rating': 3,
+# 'brand': 'Samsung', 'is_available': True}]>
 Good.objects.filter(categories__name__iexact='electronic')
 # <QuerySet [<Good: Laptop>, <Good: Headphone>, <Good: TV>]>
 Good.objects.filter(categories__name__contains='domestic')
