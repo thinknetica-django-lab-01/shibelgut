@@ -8,13 +8,17 @@ from django.shortcuts import reverse
 
 
 class Category(models.Model):
+    """
+    Class describing a model of good category
+    :param title: Category name
+    """
     title = models.CharField(max_length=150, verbose_name='Наименование категории',
                              blank=False, db_index=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return '{}'.format(self.title)
 
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
         return '/%s/' % self.title
 
     class Meta:
@@ -24,15 +28,20 @@ class Category(models.Model):
 
 
 class Tag(models.Model):
+    """
+    Class describing a model of good tag
+    :param title: Tag name
+    :param category: Category related to tag
+    """
     title = models.CharField(max_length=150, verbose_name='Наименование тэга',
                              blank=False, db_index=True)
     category = models.ForeignKey('Category', on_delete=models.CASCADE,
                                  related_name='tags', verbose_name='Категория')
 
-    def __str__(self):
+    def __str__(self) -> str:
         return '{}'.format(self.title)
 
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
         return '/%s/' % self.title
 
     class Meta:
@@ -42,6 +51,20 @@ class Tag(models.Model):
 
 
 class Good(models.Model):
+    """
+    Class describing a model of goods
+    :param title: Good name
+    :param price: Good price
+    :param description: Good description
+    :param brand: Good brand
+    :param quantity: Good quantity in stock
+    :param issue_date: Date of good issue
+    :param vendor_code: Product identification number
+    :param tag: Tag related to good
+    :param seller: Seller related to good
+    :param rating: Good rating
+    :param counter: Good view counter
+    """
     title = models.CharField(max_length=150, verbose_name='Наименование товара',
                              blank=False, db_index=True)
     price = models.DecimalField(max_digits=7, decimal_places=2,
@@ -76,20 +99,20 @@ class Good(models.Model):
     #     self.__order_commission = None
     #     super().__init__(*args, **kwargs)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return '{}'.format(self.title)
 
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
         return reverse('goods_detail_url', args=[self.id])
 
-    # Наличие товара на складе
+    # Availability of goods in stock
     @property
-    def is_available(self):
+    def is_available(self) -> bool:
         if self.quantity > 0:
             return True
         return False
 
-    # Стоимость доставки товара
+    # Shipping cost
     # @property
     # def shipping(self):
     #     return self.__shipping
@@ -105,7 +128,7 @@ class Good(models.Model):
     #         self.__shipping_charge = round(self.__shipping * self.price / 100, 2)
     #     return self.__shipping_charge
 
-    # Комиссия маркетплейса
+    # Marketplace commission
     # @property
     # def commission(self):
     #     return self.__commission
@@ -128,6 +151,15 @@ class Good(models.Model):
 
 
 class Image(models.Model):
+    """
+    Class describing a model of good images
+    :param image_1: Good image 1
+    :param image_2: Good image 2
+    :param image_3: Good image 3
+    :param image_4: Good image 4
+    :param image_5: Good image 5
+    :param good: Good related to set of images
+    """
     upload_path = 'goods_images/'
     image_1 = models.ImageField(upload_to=upload_path, verbose_name='Фото 1', null=True)
     image_2 = models.ImageField(upload_to=upload_path, verbose_name='Фото 2', null=True)
@@ -143,6 +175,15 @@ class Image(models.Model):
 
 
 class Characteristic(models.Model):
+    """
+    Class describing a model of good characteristics
+    :param color: Good color
+    :param size: Good size
+    :param length: Good length
+    :param width: Good width
+    :param height: Good height
+    :param good: Good related to set of characteristics
+    """
     color = models.CharField(max_length=100, null=True, blank=False, db_index=True)
     size = models.IntegerField(null=True)
     length = models.DecimalField(max_digits=7, decimal_places=2, null=True)
@@ -151,7 +192,7 @@ class Characteristic(models.Model):
     good = models.OneToOneField(Good, on_delete=models.CASCADE,
                                 related_name='characteristics', verbose_name='Товар')
 
-    def __str__(self):
+    def __str__(self) -> str:
         return 'Color: {}'.format(self.color)
 
     class Meta:
@@ -160,6 +201,19 @@ class Characteristic(models.Model):
 
 
 class CustomUser(models.Model):
+    """
+    Class describing a model of custom user
+    :param user: CustomUser related to User (AbstractUser)
+    :param role: CustomUser role
+    :param num_failed_logins: Number of failed login of CustomUser
+    :param photo: CustomUser photo
+    :param phone: CustomUser phone
+    :param birthday: CustomUser birthday
+    :param gender: CustomUser gender
+    :param country: Country in which CustomUser lives
+    :param city: City in which CustomUser lives
+    :param address: CustomUser address
+    """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     SELLER = 'S'
     CUSTOMER = 'C'
@@ -193,10 +247,10 @@ class CustomUser(models.Model):
     address = models.CharField(max_length=150, null=True, blank=True,
                                verbose_name='Адрес', db_index=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return 'Username: {}'.format(self.user.username)
 
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
         return '/%i/' % self.user.pk
 
     class Meta:
@@ -206,17 +260,24 @@ class CustomUser(models.Model):
 
 
 @receiver(post_save, sender=User)
-def create_user_customuser(sender, instance, created, **kwargs):
+def create_user_customuser(sender: User, instance: User, created: bool, **kwargs) -> None:
     if created:
         CustomUser.objects.create(user=instance)
 
 
 @receiver(post_save, sender=User)
-def save_user_customuser(sender, instance, **kwargs):
+def save_user_customuser(sender: User, instance: User, **kwargs) -> None:
     instance.customuser.save()
 
 
 class Review(models.Model):
+    """
+    Class decsribing a model of good review
+    :param text: Review text
+    :param date: Review date
+    :param good: Good related to review
+    :param user: CustomUser related to review
+    """
     text = models.TextField(max_length=500, blank=False)
     date = models.DateTimeField(auto_now_add=True, null=True, db_index=True)
     good = models.ForeignKey('Good', on_delete=models.CASCADE,
@@ -224,11 +285,11 @@ class Review(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE,
                                 related_name='reviews', blank=True, verbose_name='Пользователь')
 
-    def __str__(self):
+    def __str__(self) -> str:
         return 'Username: {}'.format(self.user.user.username)
 
-    def get_absolute_url(self):
-        return '/%i' % self.good.pk
+    def get_absolute_url(self) -> str:
+        return '/%i/' % self.good.pk
 
     class Meta:
         verbose_name = 'Отзыв'
@@ -236,6 +297,12 @@ class Review(models.Model):
 
 
 class Customer(models.Model):
+    """
+    Class describing a model of customer
+    :param goods: Goods list related to customer
+    :param purchase_date: Purchase date of goods
+    :param customuser: CustomUser related to customer
+    """
     goods = models.ManyToManyField('Good', related_name='customers',
                                    blank=True, verbose_name='Товары')
     purchase_date = models.DateTimeField(default=datetime.now, null=True,
@@ -243,10 +310,10 @@ class Customer(models.Model):
     customuser = models.OneToOneField(CustomUser, on_delete=models.CASCADE,
                                       related_name='customer', verbose_name='Пользователь')
 
-    def __str__(self):
+    def __str__(self) -> str:
         return 'Username: {}'.format(self.customuser.user.username)
 
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
         return '/%i/' % self.customuser.user.pk
 
     class Meta:
@@ -255,6 +322,14 @@ class Customer(models.Model):
 
 
 class Seller(models.Model):
+    """
+    Class describing a model of seller
+    :param company_name: Company name
+    :param legal_entity: Type of legal entity
+    :param manufacturer: Goods manufacturer
+    :param manufacturer_country: Manufacturer country
+    :param customuser: CustomUser related to seller
+    """
     company_name = models.CharField(max_length=150, null=True,
                                     verbose_name='Название компании', blank=False, db_index=True)
     legal_entity = models.CharField(max_length=150, null=True,
@@ -266,10 +341,10 @@ class Seller(models.Model):
     customuser = models.OneToOneField(CustomUser, on_delete=models.CASCADE,
                                       related_name='seller', verbose_name='Пользователь')
 
-    def __str__(self):
+    def __str__(self) -> str:
         return 'Username: {}'.format(self.customuser.user.username)
 
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
         return '/%i/' % self.customuser.user.pk
 
     class Meta:
@@ -279,11 +354,16 @@ class Seller(models.Model):
 
 
 class Subscriber(models.Model):
+    """
+    Class describing a model of subscriber
+    :param is_subscribed: Subscription availability
+    :param user: CustomUser related to User (AbstractUser)
+    """
     is_subscribed = models.BooleanField(default=False, verbose_name='Подписчик')
     user = models.OneToOneField(User, on_delete=models.CASCADE,
                                 related_name='user', verbose_name='Пользователь')
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.user.username
 
     class Meta:

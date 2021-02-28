@@ -1,11 +1,15 @@
+from typing import Any, Dict, List, Optional, Tuple, Type, Union
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import Group, Permission
 from django.core.cache import cache
 from django.core.mail import EmailMultiAlternatives
+from django.db.models import Model, QuerySet
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.forms import inlineformset_factory
+from django.forms import BaseForm, inlineformset_factory
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template import loader
 from django.utils.decorators import method_decorator
@@ -18,7 +22,7 @@ from ecomm.models import Characteristic, CustomUser, Good, Image, Seller, Subscr
 from ecomm.tasks import send_email_new_goods
 
 
-def index(request):
+def index(request: HttpRequest) -> HttpResponse:
     turn_on_block = False
     current_username = request.user
     simple_string = 'Hello, world!'
@@ -28,12 +32,12 @@ def index(request):
 
 
 class GoodsListView(ListView):
-    paginate_by = 10
-    model = Good
-    template_name = 'ecomm/good_list.html'
+    paginate_by: int = 10
+    model: Type[Model] = Good
+    template_name: str = 'ecomm/good_list.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context: Dict[str, Any] = super().get_context_data(**kwargs)
         goods = Good.objects.all()
         tags_list = []
         for good in goods:
@@ -41,25 +45,23 @@ class GoodsListView(ListView):
         context['tags'] = list(set(tags_list))
         context['current_tag'] = self.request.GET.get('tag') if self.request.GET.get('tag') else ''
         context['current_username'] = self.request.user
-
         return context
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet[Good]:
         queryset = super().get_queryset()
         if tag_name := self.request.GET.get('tag'):
             tag_name = tag_name.replace('_', ' ')
             queryset = Good.objects.filter(tag__title__icontains=tag_name)
-
         return queryset
 
 
 # @method_decorator(cache_page(60 * 5), name='dispatch')
 class GoodsDetailView(DetailView):
-    context_object_name = 'goods'
-    queryset = Good.objects.all()
+    context_object_name: str = 'goods'
+    queryset: QuerySet = Good.objects.all()
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data()
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context: Dict[str, Any] = super().get_context_data()
         self.object.counter += 1
         self.object.save()
         characteristics = Characteristic.objects.get(good_id=self.kwargs.get('pk'))
@@ -74,32 +76,32 @@ class GoodsDetailView(DetailView):
 
 @method_decorator(login_required, name='dispatch')
 class ProfileUserUpdate(UpdateView):
-    model = CustomUser
-    form_class = ProfileUserForm
-    template_name = 'ecomm/profile_update.html'
-    success_url = '/accounts/profile/'
+    model: Type[Model] = CustomUser
+    form_class: Optional[Type[BaseForm]] = ProfileUserForm
+    template_name: str = 'ecomm/profile_update.html'
+    success_url: str = '/accounts/profile/'
 
-    def get_context_data(self, **kwargs):
-        context = super(ProfileUserUpdate, self).get_context_data(**kwargs)
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context: Dict[str, Any] = super(ProfileUserUpdate, self).get_context_data(**kwargs)
         context['current_username'] = self.request.user
         return context
 
-    def get_object(self, queryset=None):
+    def get_object(self, queryset: Optional[Any] = None) -> CustomUser:
         return self.request.user
 
-    def form_valid(self, form):
+    def form_valid(self, form: ProfileUserForm) -> HttpResponse:
         return super(ProfileUserUpdate, self).form_valid(form)
 
 
 @method_decorator(login_required, name='dispatch')
 class GoodCreateView(PermissionRequiredMixin, CreateView):
-    permission_required = 'ecomm.add_good'
-    model = Good
-    form_class = GoodCreateForm
-    template_name = 'ecomm/good_create.html'
-    success_url = '/goods/add/'
+    permission_required: str = 'ecomm.add_good'
+    model: Type[Model] = Good
+    form_class: Optional[Type[BaseForm]] = GoodCreateForm
+    template_name: str = 'ecomm/good_create.html'
+    success_url: str = '/goods/add/'
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         self.object = None
         form_class = self.get_form_class()
         form = self.get_form(form_class)
@@ -109,7 +111,7 @@ class GoodCreateView(PermissionRequiredMixin, CreateView):
         return self.render_to_response(self.get_context_data(
             form=form, characteristic_form=characteristic_form, image_form=image_form))
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         # characteristic_form = CharacteristicFormset(self.request.POST)
@@ -120,7 +122,7 @@ class GoodCreateView(PermissionRequiredMixin, CreateView):
 
         return self.form_valid(form)
 
-    def form_valid(self, form):
+    def form_valid(self, form: GoodCreateForm) -> HttpResponse:
         self.object = form.save()
         # characteristic_form.instance = self.object
         # characteristic_form.save()
@@ -129,8 +131,8 @@ class GoodCreateView(PermissionRequiredMixin, CreateView):
 
         return redirect(self.get_success_url())
 
-    def get_context_data(self, **kwargs):
-        context = super(GoodCreateView, self).get_context_data(**kwargs)
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context: Dict[str, Any] = super(GoodCreateView, self).get_context_data(**kwargs)
         characteristic_formhelper = CharacteristicFormHelper()
         image_formhelper = ImageFormHelper()
 
@@ -154,17 +156,17 @@ class GoodCreateView(PermissionRequiredMixin, CreateView):
 
 @method_decorator(login_required, name='dispatch')
 class GoodUpdateView(PermissionRequiredMixin, UserPassesTestMixin, UpdateView):
-    permission_required = 'ecomm.change_good'
-    model = Good
-    form_class = GoodUpdateForm
-    template_name = 'ecomm/good_update.html'
-    success_url = '/goods/<int:pk>/edit/'
+    permission_required: str = 'ecomm.change_good'
+    model: Type[Model] = Good
+    form_class: Optional[Type[BaseForm]] = GoodUpdateForm
+    template_name: str = 'ecomm/good_update.html'
+    success_url: str = '/goods/<int:pk>/edit/'
 
-    def test_func(self):
+    def test_func(self) -> int:
         return self.request.user.id == self.get_object().seller_id
 
-    def get_context_data(self, **kwargs):
-        context = super(GoodUpdateView, self).get_context_data(**kwargs)
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context: Dict[str, Any] = super(GoodUpdateView, self).get_context_data(**kwargs)
 
         good = get_object_or_404(Good, pk=self.kwargs.get('pk'))
 
@@ -214,7 +216,7 @@ class GoodUpdateView(PermissionRequiredMixin, UserPassesTestMixin, UpdateView):
         return context
 
 
-def send_confirmation_email(recipient_email, context):
+def send_confirmation_email(recipient_email: List[str], context: Dict[str, Any]) -> None:
     template = loader.get_template(template_name='ecomm/emails/signup_success.html')
     html_content = template.render(context=context)
     msg = EmailMultiAlternatives(
@@ -226,7 +228,7 @@ def send_confirmation_email(recipient_email, context):
     msg.send()
 
 
-def create_common_users_group():
+def create_common_users_group() -> Group:
     common_users_group, created = Group.objects.get_or_create(name='Common Users')
     if created:
         common_users_group.permissions.add(
@@ -237,7 +239,7 @@ def create_common_users_group():
 
 
 @receiver(post_save, sender=User)
-def create_user(sender, instance, created, **kwargs):
+def create_user(sender: User, instance: User, created: bool, **kwargs: Any) -> None:
     if created:
         instance.groups.add(create_common_users_group())
 
@@ -245,14 +247,14 @@ def create_user(sender, instance, created, **kwargs):
 
 
 @receiver(post_save, sender=Good)
-def create_new_goods(sender, instance, created, **kwargs):
+def create_new_goods(sender: Good, instance: Good, created: bool, **kwargs: Any) -> None:
     if created:
         goods = Good.objects.get(pk=instance.id)
         send_email_new_goods.delay(goods.title)
 
 
 @receiver(post_save, sender=Seller)
-def create_seller(sender, instance, **kwargs):
+def create_seller(sender: Type[Seller], instance: Seller, **kwargs: Any) -> None:
     sellers_group, created = Group.objects.get_or_create(name='Sellers')
     instance.customuser.user.groups.add(sellers_group)
     if created:
@@ -261,7 +263,7 @@ def create_seller(sender, instance, **kwargs):
         sellers_group.permissions.set(permissions_queryset)
 
 
-def send_subscription_email(recipient_email, context):
+def send_subscription_email(recipient_email: List[str], context: Dict[str, Any]) -> None:
     template = loader.get_template(template_name='ecomm/emails/goods_subscription.html')
     html_content = template.render(context=context)
     msg = EmailMultiAlternatives(
@@ -274,10 +276,10 @@ def send_subscription_email(recipient_email, context):
 
 
 @login_required
-def get_subscription(request):
+def get_subscription(request: HttpRequest) -> HttpResponse:
     form = SubscriptionForm()
 
-    context = {
+    context: Dict[str, Any] = {
         'form': form,
         'current_username': request.user
     }
@@ -300,19 +302,19 @@ def get_subscription(request):
 
 @method_decorator(login_required, name='dispatch')
 class SellerCreateView(CreateView):
-    model = Seller
-    form_class = SellerCreateForm
-    template_name = 'ecomm/profile_seller.html'
-    success_url = '/accounts/profile/seller/'
+    model: Type[Model] = Seller
+    form_class: Optional[Type[BaseForm]] = SellerCreateForm
+    template_name: str = 'ecomm/profile_seller.html'
+    success_url: str = '/accounts/profile/seller/'
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         self.object = None
         form_class = self.get_form_class()
         form = self.get_form(form_class)
 
         return self.render_to_response(self.get_context_data(form=form))
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         form_class = self.get_form_class()
         form = self.get_form(form_class)
 
@@ -321,12 +323,12 @@ class SellerCreateView(CreateView):
 
         return self.form_valid(form)
 
-    def form_valid(self, form):
+    def form_valid(self, form: SellerCreateForm) -> HttpResponse:
         self.object = form.save()
 
         return redirect(self.get_success_url())
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super(SellerCreateView, self).get_context_data(**kwargs)
 
         if self.request.POST:
