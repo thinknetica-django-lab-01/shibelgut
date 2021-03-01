@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     'django_celery_results',
     'django_celery_beat',
     'debug_toolbar',
+    'channels',
+    'chat',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -222,3 +224,15 @@ CACHES = {
 # Security
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+
+# Channels configuration
+ASGI_APPLICATION = 'chat.routing.application'
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             'hosts': [CHANNEL_REDIS_HOST],
+#             'symmetric_encryption_keys': [SECRET_KEY],
+#         },
+#     },
+# }
