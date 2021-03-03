@@ -5,7 +5,7 @@ from django.contrib.flatpages.admin import FlatPageAdmin as FlatPageAdminOrigina
 from django.contrib.flatpages.admin import FlatpageForm as FlatpageFormOriginal
 from django.contrib.flatpages.models import FlatPage
 
-from ecomm.models import Characteristic, Category, CustomUser, Good, Image, Tag, Seller
+from ecomm.models import Good
 
 
 class FlatpageForm(FlatpageFormOriginal):
