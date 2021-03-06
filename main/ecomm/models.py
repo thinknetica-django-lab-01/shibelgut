@@ -161,13 +161,13 @@ class Image(models.Model):
     :param good: Good related to set of images
     """
     upload_path = 'goods_images/'
+    good = models.OneToOneField(Good, on_delete=models.CASCADE,
+                                related_name='images', verbose_name='Товар')
     image_1 = models.ImageField(upload_to=upload_path, verbose_name='Фото 1', null=True)
     image_2 = models.ImageField(upload_to=upload_path, verbose_name='Фото 2', null=True)
     image_3 = models.ImageField(upload_to=upload_path, verbose_name='Фото 3', null=True)
     image_4 = models.ImageField(upload_to=upload_path, verbose_name='Фото 4', null=True)
     image_5 = models.ImageField(upload_to=upload_path, verbose_name='Фото 5', null=True)
-    good = models.OneToOneField(Good, on_delete=models.CASCADE,
-                                related_name='images', verbose_name='Товар')
 
     class Meta:
         verbose_name = 'Изображение'
@@ -184,13 +184,13 @@ class Characteristic(models.Model):
     :param height: Good height
     :param good: Good related to set of characteristics
     """
+    good = models.OneToOneField(Good, on_delete=models.CASCADE,
+                                related_name='characteristics', verbose_name='Товар')
     color = models.CharField(max_length=100, null=True, blank=False, db_index=True)
     size = models.IntegerField(null=True)
     length = models.DecimalField(max_digits=7, decimal_places=2, null=True)
     width = models.DecimalField(max_digits=7, decimal_places=2, null=True)
     height = models.DecimalField(max_digits=7, decimal_places=2, null=True)
-    good = models.OneToOneField(Good, on_delete=models.CASCADE,
-                                related_name='characteristics', verbose_name='Товар')
 
     def __str__(self) -> str:
         return 'Color: {}'.format(self.color)
@@ -278,12 +278,12 @@ class Review(models.Model):
     :param good: Good related to review
     :param user: CustomUser related to review
     """
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE,
+                                related_name='reviews', blank=True, verbose_name='Пользователь')
     text = models.TextField(max_length=500, blank=False)
     date = models.DateTimeField(auto_now_add=True, null=True, db_index=True)
     good = models.ForeignKey('Good', on_delete=models.CASCADE,
                              related_name='reviews', blank=True, verbose_name='Товар')
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE,
-                                related_name='reviews', blank=True, verbose_name='Пользователь')
 
     def __str__(self) -> str:
         return 'Username: {}'.format(self.user.user.username)
@@ -303,12 +303,12 @@ class Customer(models.Model):
     :param purchase_date: Purchase date of goods
     :param customuser: CustomUser related to customer
     """
+    customuser = models.OneToOneField(CustomUser, on_delete=models.CASCADE,
+                                      related_name='customer', verbose_name='Пользователь')
     goods = models.ManyToManyField('Good', related_name='customers',
                                    blank=True, verbose_name='Товары')
     purchase_date = models.DateTimeField(default=datetime.now, null=True,
                                          verbose_name='Дата покупки', db_index=True)
-    customuser = models.OneToOneField(CustomUser, on_delete=models.CASCADE,
-                                      related_name='customer', verbose_name='Пользователь')
 
     def __str__(self) -> str:
         return 'Username: {}'.format(self.customuser.user.username)
@@ -330,6 +330,8 @@ class Seller(models.Model):
     :param manufacturer_country: Manufacturer country
     :param customuser: CustomUser related to seller
     """
+    customuser = models.OneToOneField(CustomUser, on_delete=models.CASCADE,
+                                      related_name='seller', verbose_name='Пользователь')
     company_name = models.CharField(max_length=150, null=True,
                                     verbose_name='Название компании', blank=False, db_index=True)
     legal_entity = models.CharField(max_length=150, null=True,
@@ -338,8 +340,6 @@ class Seller(models.Model):
                                     verbose_name='Производитель', db_index=True)
     manufacturer_country = models.CharField(max_length=150, null=True,
                                             verbose_name='Страна происхождения', db_index=True)
-    customuser = models.OneToOneField(CustomUser, on_delete=models.CASCADE,
-                                      related_name='seller', verbose_name='Пользователь')
 
     def __str__(self) -> str:
         return 'Username: {}'.format(self.customuser.user.username)
@@ -359,9 +359,9 @@ class Subscriber(models.Model):
     :param is_subscribed: Subscription availability
     :param user: CustomUser related to User (AbstractUser)
     """
-    is_subscribed = models.BooleanField(default=False, verbose_name='Подписчик')
     user = models.OneToOneField(User, on_delete=models.CASCADE,
                                 related_name='user', verbose_name='Пользователь')
+    is_subscribed = models.BooleanField(default=False, verbose_name='Подписчик')
 
     def __str__(self) -> str:
         return self.user.username
