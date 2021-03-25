@@ -39,10 +39,12 @@ class GoodsListView(ListView):
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context: Dict[str, Any] = super().get_context_data(**kwargs)
         goods = Good.objects.all()
-        tags_list = []
-        for good in goods:
-            tags_list.append(good.tag.title)
-        context['tags'] = list(set(tags_list))
+        # tags_list = []
+        # for good in goods:
+        #     tags_list.append(good.tag.title)
+        # context['tags'] = list(set(tags_list))
+        tags_list = [goods[i].tag[0] for i in range(len(goods))]
+        context['tags'] = set(tags_list)
         context['current_tag'] = self.request.GET.get('tag') if self.request.GET.get('tag') else ''
         context['current_username'] = self.request.user
         return context
@@ -51,7 +53,8 @@ class GoodsListView(ListView):
         queryset = super().get_queryset()
         if tag_name := self.request.GET.get('tag'):
             tag_name = tag_name.replace('_', ' ')
-            queryset = Good.objects.filter(tag__title__icontains=tag_name)
+            # queryset = Good.objects.filter(tag__title__icontains=tag_name)
+            queryset = Good.objects.filter(tag__icontains=tag_name)
         return queryset
 
 

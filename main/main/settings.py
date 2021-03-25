@@ -33,6 +33,7 @@ ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(' ')
 # Application definition
 SITE_ID = 1
 
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -116,11 +117,11 @@ EMAIL_USE_SSL = os.environ.get('EMAIL_USE_SSL')
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
-        'APP': {
-            'client_id': os.environ.get('GOOGLE_CLIENT_ID'),
-            'secret': os.environ.get('GOOGLE_SECRET'),
-            'key': '',
-        },
+        # 'APP': {
+        #     'client_id': os.environ.get('GOOGLE_CLIENT_ID'),
+        #     'secret': os.environ.get('GOOGLE_SECRET'),
+        #     'key': '',
+        # },
         'SCOPE': [
             'profile',
             'email',
@@ -146,13 +147,21 @@ WSGI_APPLICATION = 'main.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': os.environ.get('SQL_ENGINE', 'django.db.backends.postgresql_psycopg2'),
-        'NAME': os.environ.get('SQL_DATABASE', os.path.join(BASE_DIR, 'db.postgresql')),
-        'USER': os.environ.get('SQL_USER', 'user'),
-        'PASSWORD': os.environ.get('SQL_PASSWORD', 'password'),
+        'NAME': os.environ.get('SQL_DATABASE', 'django_main_db_dev'),
+        'USER': os.environ.get('SQL_USER', 'admin'),
+        'PASSWORD': os.environ.get('SQL_PASSWORD', '!Password'),
         'HOST': os.environ.get('SQL_HOST', 'localhost'),
         'PORT': os.environ.get('SQL_PORT', '5432'),
     },
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': 'db.sqlite3',
+#     },
+# }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
