@@ -81,7 +81,7 @@
   "model": "admin.logentry",
   "pk": 7,
   "fields": {
-    "action_time": "2021-02-06T17:02:09.000Z",
+    "action_time": "2021-02-06T17:02:09Z",
     "user": 1,
     "content_type": 4,
     "object_id": "4",
@@ -325,6 +325,58 @@
   }
 },
 {
+  "model": "admin.logentry",
+  "pk": 26,
+  "fields": {
+    "action_time": "2021-03-25T07:30:31.150Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "2",
+    "object_repr": "127.0.0.1:5000",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 27,
+  "fields": {
+    "action_time": "2021-03-25T07:31:33.751Z",
+    "user": 1,
+    "content_type": 21,
+    "object_id": "1",
+    "object_repr": "Google",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Sites\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 28,
+  "fields": {
+    "action_time": "2021-03-25T07:46:25.273Z",
+    "user": 1,
+    "content_type": 21,
+    "object_id": "1",
+    "object_repr": "Google",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Sites\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 29,
+  "fields": {
+    "action_time": "2021-03-25T07:48:34.280Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "2",
+    "object_repr": "127.0.0.1:5000",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
   "model": "auth.group",
   "pk": 1,
   "fields": {
@@ -351,7 +403,7 @@
   "pk": 1,
   "fields": {
     "password": "pbkdf2_sha256$216000$KZF2Ejz8MSJQ$D0UBVjyE1mge9hel30275oCRMOrOmhQCdde3Iceo3yI=",
-    "last_login": "2021-03-01T09:28:36.938Z",
+    "last_login": "2021-03-25T09:20:00.505Z",
     "is_superuser": true,
     "username": "admin",
     "first_name": "Alexander",
@@ -428,7 +480,7 @@
   "pk": 5,
   "fields": {
     "password": "pbkdf2_sha256$216000$33iqRXo00OhG$Bo9/xBbMRY69DW3+KCE5Gn+B6rP6IKAamIH0njq0APM=",
-    "last_login": "2021-02-19T09:10:14.191Z",
+    "last_login": "2021-03-23T13:01:00.513Z",
     "is_superuser": false,
     "username": "Leonardo",
     "first_name": "Leonardo",
@@ -557,7 +609,8 @@
     "is_active": true,
     "date_joined": "2021-02-14T09:11:46.648Z",
     "groups": [
-      1
+      1,
+      2
     ],
     "user_permissions": []
   }
@@ -577,7 +630,8 @@
     "is_active": true,
     "date_joined": "2021-02-14T09:27:35.145Z",
     "groups": [
-      1
+      1,
+      2
     ],
     "user_permissions": []
   }
@@ -753,7 +807,8 @@
     "is_active": true,
     "date_joined": "2021-02-16T06:44:53.950Z",
     "groups": [
-      1
+      1,
+      2
     ],
     "user_permissions": []
   }
@@ -812,7 +867,9 @@
     "is_staff": false,
     "is_active": true,
     "date_joined": "2021-02-24T12:20:46.219Z",
-    "groups": [],
+    "groups": [
+      2
+    ],
     "user_permissions": []
   }
 },
@@ -831,7 +888,8 @@
     "is_active": true,
     "date_joined": "2021-02-25T08:14:14.830Z",
     "groups": [
-      1
+      1,
+      2
     ],
     "user_permissions": []
   }
@@ -851,7 +909,8 @@
     "is_active": true,
     "date_joined": "2021-02-25T09:20:22.804Z",
     "groups": [
-      1
+      1,
+      2
     ],
     "user_permissions": []
   }
@@ -871,7 +930,8 @@
     "is_active": true,
     "date_joined": "2021-02-25T09:31:02.936Z",
     "groups": [
-      1
+      1,
+      2
     ],
     "user_permissions": []
   }
@@ -891,7 +951,8 @@
     "is_active": true,
     "date_joined": "2021-02-25T09:55:09.317Z",
     "groups": [
-      1
+      1,
+      2
     ],
     "user_permissions": []
   }
@@ -932,7 +993,8 @@
     "is_active": true,
     "date_joined": "2021-02-25T13:40:15.193Z",
     "groups": [
-      1
+      1,
+      2
     ],
     "user_permissions": []
   }
@@ -952,7 +1014,8 @@
     "is_active": true,
     "date_joined": "2021-02-25T13:42:20.855Z",
     "groups": [
-      1
+      1,
+      2
     ],
     "user_permissions": []
   }
@@ -972,7 +1035,8 @@
     "is_active": true,
     "date_joined": "2021-02-25T14:01:24.124Z",
     "groups": [
-      1
+      1,
+      2
     ],
     "user_permissions": []
   }
@@ -1003,7 +1067,7 @@
   "pk": 34,
   "fields": {
     "password": "pbkdf2_sha256$216000$LgJkgUiE8008$oKwCHfrOxbIGu3iZ17uJX8s44bdPBZ1kUycGoHEDcS8=",
-    "last_login": "2021-03-01T09:26:59.194Z",
+    "last_login": "2021-03-23T12:58:02.806Z",
     "is_superuser": false,
     "username": "test_user11",
     "first_name": "",
@@ -1015,6 +1079,26 @@
     "groups": [
       1,
       2
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 35,
+  "fields": {
+    "password": "pbkdf2_sha256$216000$098vu17ktXv5$qtG8PWzkKJWKv7IpUN2ip3VWaQMnyoks2THe9LaIrLM=",
+    "last_login": "2021-03-25T09:09:01.290Z",
+    "is_superuser": false,
+    "username": "Nata",
+    "first_name": "",
+    "last_name": "",
+    "email": "nat09chenk@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2021-03-25T08:44:48.806Z",
+    "groups": [
+      1
     ],
     "user_permissions": []
   }
@@ -1049,6 +1133,14 @@
   "fields": {
     "session_data": "e30:1lA3u6:GcZNfzwa0X51IpIziAqEGoJ_DSXc8AUADPO0YF7PyK0",
     "expire_date": "2021-02-25T04:48:34.980Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "9f9emju7m99r7wu24skgil6aj2qb7qqw",
+  "fields": {
+    "session_data": ".eJyVVGtzojAU_Su7-eyDh4A4szOrbqu2VqzatbrTYVIIEAWCIcFHx_--QbBbt_scvpB7z70n95wLLyAlDoYhdBzCY2YXp5D4OAatF1CG81fsglbMw7ACeIqo_eOYUJJhF1HQAj4hfoiAgORpIMuSeLSGZhimrjcMVdMlU2RDmDK75Ch6uJAhe0VwjF7boh2j0BYJeGb_bT8UQRyKfAyZZDoBitef_TxUc0gk0hmi2MPItUscoxxVBDhComYkCEIMP9xiikUhEXgfZyi2L_Mi7MEIh_tz_A0-wQ7jNA8GjCVpq14PA7VWaJFr5ZCYoZjlt6nDar1tBXKjh_co7Er-YFA1m2M4au74arrfysEIpcNF9NhXq9b145V1_yk19aqTi0YcGOYklIPjsXDh0pcEpumW0Fypjx2YzXRTMWAzCsazZdZ99i2rOVRCF2Xe7XxlrRZ8PPcPv3QDp3bKE0QLCg-GKSr4ytlzMTAVVe80OvV6r9BfDMr5GPS8Vy4RgA4TNpzNutgPoEiKXJXUqqLNJLOlaC3VrEmaugRCFtGIoVyXWCyQwNbLFU7rYk89HKI6OK2sg9JUpIu5RZlDknI0yFlgJ5DCKAfkPU_Xt6HrUlGERPTbHz6Hf1zG82QJxRGk--J4fKoARtYovjQWJsmJQK6cP8g3fCUe7KFi1qDU9vr69K4ztAZ8myldiczbvb4amzyZruk9TpT4ZuHFzIwCa3O_sH2_o23aTbk76xL7uj05PMynugxldaMY8WrL8WSgLgZutnSvnPG6syePPeNu0vUe2JfAhH0qm7bSW8v-ur2Q9K8ca42h0lQPLBs4zzpbPwfXvDPyBkM-vu0GoLytnSKHIlbIjXYJFrrakF06K0snZ42a3jCXp43_6U9VGC2s-E83l2PiGcbhJttN9uDp-B3w4aag:1lPMGB:Tk0Oo6weB3WHeNOoCxFgErdSYcm50JvsaMaQjju2wSQ",
+    "expire_date": "2021-04-08T09:26:35.198Z"
   }
 },
 {
@@ -1217,14 +1309,6 @@
   "fields": {
     "domain": "example.com",
     "name": "example.com"
-  }
-},
-{
-  "model": "sites.site",
-  "pk": 2,
-  "fields": {
-    "domain": "ecomm.com",
-    "name": "ecomm.com"
   }
 },
 {
@@ -1859,7 +1943,7 @@
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 1,
+    "tag": "[\"Camera and Photo\"]",
     "seller": 5,
     "rating": 69,
     "counter": 0
@@ -1877,10 +1961,10 @@
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 2,
+    "tag": "[\"Car and Vehicle Electronics\"]",
     "seller": 5,
     "rating": 55,
-    "counter": 0
+    "counter": 3
   }
 },
 {
@@ -1895,7 +1979,7 @@
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 3,
+    "tag": "[\"Cell Phones and Accessories\"]",
     "seller": 5,
     "rating": 71,
     "counter": 0
@@ -1905,18 +1989,18 @@
   "model": "ecomm.good",
   "pk": 4,
   "fields": {
-    "title": "2020 Lenovo ThinkPad E15 15.6\" FHD Full HD (1920x1080) Business Laptop (Intel 10th Quad Core i5-10210U, 16GB DDR4 RAM, 512GB PCIe SSD)",
+    "title": "2020 Lenovo ThinkPad E15 15.6 FHD Full HD (1920x1080) Business Laptop (Intel 10th Quad Core i5-10210U, 16GB DDR4 RAM, 512GB PCIe SSD)",
     "price": "888.97",
-    "description": "Intel 10th Gen Core i5-10210U (4 cores 8 threads, base clock speed 1.6GHz, max turbo to 4.2GHz, 6MB L3 Cache) The Latest ThinkPad E-series E15, A Successor to E590, Features 15.6\" Full HD (1920x1080) TN Anti-glare 220nits Display,Integrated Intel UHD Graphics 620 - Supports external digital monitor via HDMI or USB Type-C, Max external digital monitor resolution: 4K(3840x2160) 1 x USB 3.1 Gen1 Type-C (Power Delivery and DisplayPort), 2 x USB 3.1 Gen1 (1 always on), 1 x USB 2.0",
+    "description": "Intel 10th Gen Core i5-10210U (4 cores 8 threads, base clock speed 1.6GHz, max turbo to 4.2GHz, 6MB L3 Cache) The Latest ThinkPad E-series E15, A Successor to E590, Features 15.6 Full HD (1920x1080) TN Anti-glare 220nits Display,Integrated Intel UHD Graphics 620 - Supports external digital monitor via HDMI or USB Type-C, Max external digital monitor resolution: 4K(3840x2160) 1 x USB 3.1 Gen1 Type-C (Power Delivery and DisplayPort), 2 x USB 3.1 Gen1 (1 always on), 1 x USB 2.0",
     "brand": "Lenovo",
     "quantity": 20,
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 19,
+    "tag": "[\"Computers and Tablets\"]",
     "seller": 5,
     "rating": 127,
-    "counter": 22
+    "counter": 28
   }
 },
 {
@@ -1931,7 +2015,7 @@
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 14,
+    "tag": "[\"Printers\"]",
     "seller": 5,
     "rating": 554,
     "counter": 1
@@ -1949,10 +2033,10 @@
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 36,
+    "tag": "[\"Sports\"]",
     "seller": 5,
     "rating": 11110,
-    "counter": 0
+    "counter": 1
   }
 },
 {
@@ -1967,7 +2051,7 @@
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 46,
+    "tag": "[\"Laptop Bags\"]",
     "seller": 5,
     "rating": 14613,
     "counter": 3
@@ -1985,7 +2069,7 @@
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 45,
+    "tag": "[\"Puzzles\"]",
     "seller": 5,
     "rating": 6342,
     "counter": 1
@@ -2003,7 +2087,7 @@
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 43,
+    "tag": "[\"Toy Remote Control and Play Vehicles\"]",
     "seller": 5,
     "rating": 2236,
     "counter": 1
@@ -2021,7 +2105,7 @@
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 49,
+    "tag": "[\"Garment Bags\"]",
     "seller": 5,
     "rating": 253,
     "counter": 0
@@ -2031,15 +2115,15 @@
   "model": "ecomm.good",
   "pk": 11,
   "fields": {
-    "title": "WOLVERINE Men's Overpass 6\" Composite Toe Waterproof Work Boot",
+    "title": "WOLVERINE Men's Overpass 6 Composite Toe Waterproof Work Boot",
     "price": "101.16",
-    "description": "100% Leather and Textile Imported Rubber sole Shaft measures approximately 5\" from arch Flexible, athletic Contour Welt construction moves with you by bending and flexing at essential points Premium waterproof leather with abrasion resistant toe Removable Ortholite cushioned footbed for all-day comfort",
+    "description": "100% Leather and Textile Imported Rubber sole Shaft measures approximately 5 from arch Flexible, athletic Contour Welt construction moves with you by bending and flexing at essential points Premium waterproof leather with abrasion resistant toe Removable Ortholite cushioned footbed for all-day comfort",
     "brand": "WOLVERINE",
     "quantity": 0,
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 51,
+    "tag": "[\"Shoes for Men\"]",
     "seller": 9,
     "rating": 3513,
     "counter": 1
@@ -2049,7 +2133,7 @@
   "model": "ecomm.good",
   "pk": 12,
   "fields": {
-    "title": "EVER BOOTS \"Tank Men's Soft Toe Oil Full Grain Leather Work Boots Construction Rubber Sole",
+    "title": "EVER BOOTS Tank Men's Soft Toe Oil Full Grain Leather Work Boots Construction Rubber Sole",
     "price": "59.99",
     "description": "100% Leather Rubber sole Shaft measures approximately 7 from arch Durability: Goodyear Welt Construction is the toughest shoe construction ever invented. It’s the best choice for Industrial Construction Workers, Contractors, Home Builders, Electricians, Yard Jobs. Rubber outsole delivers stability on walking any kind terrains",
     "brand": "EVER BOOTS",
@@ -2057,10 +2141,10 @@
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 51,
+    "tag": "[\"Shoes for Men\"]",
     "seller": 5,
     "rating": 7219,
-    "counter": 1
+    "counter": 3
   }
 },
 {
@@ -2075,10 +2159,10 @@
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 52,
+    "tag": "[\"Shirts for Men\"]",
     "seller": 5,
     "rating": 30246,
-    "counter": 1
+    "counter": 2
   }
 },
 {
@@ -2093,7 +2177,7 @@
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 53,
+    "tag": "[\"Jeans for Men\"]",
     "seller": 5,
     "rating": 23042,
     "counter": 0
@@ -2111,10 +2195,10 @@
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 54,
+    "tag": "[\"Pants for Men\"]",
     "seller": 5,
     "rating": 33859,
-    "counter": 1
+    "counter": 2
   }
 },
 {
@@ -2129,10 +2213,10 @@
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 55,
+    "tag": "[\"Jackets and Coats for Men\"]",
     "seller": 5,
     "rating": 2770,
-    "counter": 2
+    "counter": 3
   }
 },
 {
@@ -2141,16 +2225,16 @@
   "fields": {
     "title": "Columbia Women's Maiden Ice Snow Boot II",
     "price": "53.95",
-    "description": "100% Leather and Textile Imported Rubber sole Shaft measures approximately Ankle\" from arch ADVANCED TECHNOLOGY: This Columbia Women's Ice Maiden II boot features Techlite lightweight midsole for long lasting comfort, superior cushioning, and high energy return as well as Omni-Grip advanced traction rubber sole for slip-free movement.",
+    "description": "100% Leather and Textile Imported Rubber sole Shaft measures approximately Ankle from arch ADVANCED TECHNOLOGY: This Columbia Women's Ice Maiden II boot features Techlite lightweight midsole for long lasting comfort, superior cushioning, and high energy return as well as Omni-Grip advanced traction rubber sole for slip-free movement.",
     "brand": "Columbia",
     "quantity": 2,
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 56,
+    "tag": "[\"Shoes for Women\"]",
     "seller": 5,
     "rating": 17174,
-    "counter": 7
+    "counter": 8
   }
 },
 {
@@ -2165,7 +2249,7 @@
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 56,
+    "tag": "[\"Shoes for Women\"]",
     "seller": 5,
     "rating": 1011,
     "counter": 0
@@ -2183,7 +2267,7 @@
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 57,
+    "tag": "[\"Dresses\"]",
     "seller": 5,
     "rating": 7035,
     "counter": 0
@@ -2201,7 +2285,7 @@
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 58,
+    "tag": "[\"Tops and Blouses\"]",
     "seller": 5,
     "rating": 3541,
     "counter": 0
@@ -2219,7 +2303,7 @@
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 61,
+    "tag": "[\"Health Care\"]",
     "seller": 5,
     "rating": 22459,
     "counter": 0
@@ -2231,13 +2315,13 @@
   "fields": {
     "title": "Thermometer for Adults, Oral Thermometer for Fever, Medical Thermometer with Fever Alert, Memory Recall, C/F Switchable",
     "price": "6.99",
-    "description": "The \"Lo\" means the ambient temperature below 32℃/℉. Please start take your temperature when see \"Lo\". Fast and Accurate Reading: Fast measurement, normally is 0.5-1 minute. This thermometer is clinically accurate with high precision Wide Range of Use：Works for orally, rectally and in armpit. It is suitable for all ages, babies, children, adults and pets to measure temperature.",
+    "description": "The Lo means the ambient temperature below 32℃/℉. Please start take your temperature when see Lo. Fast and Accurate Reading: Fast measurement, normally is 0.5-1 minute. This thermometer is clinically accurate with high precision Wide Range of Use：Works for orally, rectally and in armpit. It is suitable for all ages, babies, children, adults and pets to measure temperature.",
     "brand": "Lo",
     "quantity": 123,
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 63,
+    "tag": "[\"Medical Supplies and Equipment\"]",
     "seller": 5,
     "rating": 24101,
     "counter": 0
@@ -2255,10 +2339,10 @@
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 36,
+    "tag": "[\"Sports\"]",
     "seller": 5,
     "rating": 8712,
-    "counter": 3
+    "counter": 4
   }
 },
 {
@@ -2273,10 +2357,10 @@
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 36,
+    "tag": "[\"Sports\"]",
     "seller": 5,
     "rating": 30627,
-    "counter": 0
+    "counter": 1
   }
 },
 {
@@ -2291,7 +2375,7 @@
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 36,
+    "tag": "[\"Sports\"]",
     "seller": 5,
     "rating": 1102,
     "counter": 0
@@ -2309,7 +2393,7 @@
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 36,
+    "tag": "[\"Sports\"]",
     "seller": 5,
     "rating": 75,
     "counter": 1
@@ -2327,7 +2411,7 @@
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 36,
+    "tag": "[\"Sports\"]",
     "seller": 5,
     "rating": 10011,
     "counter": 2
@@ -2345,7 +2429,7 @@
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 36,
+    "tag": "[\"Sports\"]",
     "seller": 5,
     "rating": 41,
     "counter": 0
@@ -2363,7 +2447,7 @@
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 36,
+    "tag": "[\"Sports\"]",
     "seller": 5,
     "rating": 8,
     "counter": 3
@@ -2381,10 +2465,10 @@
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 36,
+    "tag": "[\"Sports\"]",
     "seller": 5,
     "rating": 0,
-    "counter": 0
+    "counter": 1
   }
 },
 {
@@ -2399,7 +2483,7 @@
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 36,
+    "tag": "[\"Sports\"]",
     "seller": 5,
     "rating": 110,
     "counter": 0
@@ -2417,7 +2501,7 @@
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 36,
+    "tag": "[\"Sports\"]",
     "seller": 5,
     "rating": 3139,
     "counter": 0
@@ -2427,7 +2511,7 @@
   "model": "ecomm.good",
   "pk": 33,
   "fields": {
-    "title": "SAMSUNG LC24F396FHNXZA 23.5\" FHD Curved LED-Lit FreeSync Monitor",
+    "title": "SAMSUNG LC24F396FHNXZA 23.5 FHD Curved LED-Lit FreeSync Monitor",
     "price": "129.00",
     "description": "1800R curvature of the screen provides a truly immersive viewing experience A stylish design featuring a Black body metallic finish and sleek curves 4 (GTG) ms response time",
     "brand": "SAMSUNG",
@@ -2435,7 +2519,7 @@
     "issue_date": null,
     "vendor_code": null,
     "pub_date": null,
-    "tag": 13,
+    "tag": "[\"Monitors\"]",
     "seller": 9,
     "rating": 4080,
     "counter": 0
@@ -2453,7 +2537,7 @@
     "issue_date": null,
     "vendor_code": "a",
     "pub_date": "2021-02-19T09:20:28.163Z",
-    "tag": 12,
+    "tag": "[\"Data Storage\"]",
     "seller": 5,
     "rating": null,
     "counter": 1
@@ -2471,7 +2555,7 @@
     "issue_date": null,
     "vendor_code": "a",
     "pub_date": "2021-02-19T09:31:45.166Z",
-    "tag": 12,
+    "tag": "[\"Data Storage\"]",
     "seller": 5,
     "rating": null,
     "counter": 0
@@ -2489,7 +2573,7 @@
     "issue_date": null,
     "vendor_code": "a",
     "pub_date": "2021-02-19T09:37:51.424Z",
-    "tag": 12,
+    "tag": "[\"Data Storage\"]",
     "seller": 5,
     "rating": null,
     "counter": 0
@@ -2507,7 +2591,7 @@
     "issue_date": null,
     "vendor_code": "a",
     "pub_date": "2021-02-19T09:50:13.778Z",
-    "tag": 12,
+    "tag": "[\"Data Storage\"]",
     "seller": 5,
     "rating": null,
     "counter": 0
@@ -2525,7 +2609,7 @@
     "issue_date": null,
     "vendor_code": "a",
     "pub_date": "2021-02-19T09:52:48.394Z",
-    "tag": 12,
+    "tag": "[\"Data Storage\"]",
     "seller": 5,
     "rating": null,
     "counter": 0
@@ -2543,7 +2627,7 @@
     "issue_date": null,
     "vendor_code": "1",
     "pub_date": "2021-02-19T15:37:40.517Z",
-    "tag": 19,
+    "tag": "[\"Computers and Tablets\"]",
     "seller": 5,
     "rating": null,
     "counter": 0
@@ -2561,7 +2645,7 @@
     "issue_date": null,
     "vendor_code": "1",
     "pub_date": "2021-02-19T10:04:27.092Z",
-    "tag": 18,
+    "tag": "[\"Computer Accessories\"]",
     "seller": 5,
     "rating": null,
     "counter": 0
@@ -2571,960 +2655,960 @@
   "model": "ecomm.image",
   "pk": 1,
   "fields": {
+    "good": 1,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 1
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 2,
   "fields": {
+    "good": 2,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 2
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 3,
   "fields": {
+    "good": 3,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 3
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 4,
   "fields": {
+    "good": 4,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 4
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 5,
   "fields": {
+    "good": 5,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 5
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 6,
   "fields": {
+    "good": 6,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 6
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 7,
   "fields": {
+    "good": 7,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 7
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 8,
   "fields": {
+    "good": 8,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 8
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 9,
   "fields": {
+    "good": 9,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 9
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 10,
   "fields": {
+    "good": 10,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 10
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 11,
   "fields": {
+    "good": 11,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 11
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 12,
   "fields": {
+    "good": 12,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 12
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 13,
   "fields": {
+    "good": 13,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 13
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 14,
   "fields": {
+    "good": 14,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 14
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 15,
   "fields": {
+    "good": 15,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 15
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 16,
   "fields": {
+    "good": 16,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 16
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 17,
   "fields": {
+    "good": 17,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 17
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 18,
   "fields": {
+    "good": 18,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 18
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 19,
   "fields": {
+    "good": 19,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 19
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 20,
   "fields": {
+    "good": 20,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 20
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 21,
   "fields": {
+    "good": 21,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 21
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 22,
   "fields": {
+    "good": 22,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 22
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 23,
   "fields": {
+    "good": 23,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 23
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 24,
   "fields": {
+    "good": 24,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 24
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 25,
   "fields": {
+    "good": 25,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 25
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 26,
   "fields": {
+    "good": 26,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 26
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 27,
   "fields": {
+    "good": 27,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 27
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 28,
   "fields": {
+    "good": 28,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 28
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 29,
   "fields": {
+    "good": 29,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 29
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 30,
   "fields": {
+    "good": 30,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 30
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 31,
   "fields": {
+    "good": 31,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 31
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 32,
   "fields": {
+    "good": 32,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 32
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 33,
   "fields": {
+    "good": 33,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 33
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 34,
   "fields": {
+    "good": 34,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 34
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 35,
   "fields": {
+    "good": 35,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 35
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 36,
   "fields": {
+    "good": 36,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 36
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 37,
   "fields": {
+    "good": 37,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 37
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 38,
   "fields": {
+    "good": 38,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 38
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 39,
   "fields": {
+    "good": 39,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 39
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.image",
   "pk": 40,
   "fields": {
+    "good": 40,
     "image_1": "",
     "image_2": "",
     "image_3": "",
     "image_4": "",
-    "image_5": "",
-    "good": 40
+    "image_5": ""
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 1,
   "fields": {
+    "good": 1,
     "color": "black",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 1
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 2,
   "fields": {
+    "good": 2,
     "color": "black",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 2
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 3,
   "fields": {
+    "good": 3,
     "color": "black",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 3
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 4,
   "fields": {
+    "good": 4,
     "color": "black",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 4
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 5,
   "fields": {
+    "good": 5,
     "color": "white",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 5
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 6,
   "fields": {
+    "good": 6,
     "color": "black",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 6
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 7,
   "fields": {
+    "good": 7,
     "color": "black",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 7
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 8,
   "fields": {
+    "good": 8,
     "color": "blue",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 8
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 9,
   "fields": {
+    "good": 9,
     "color": "blue",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 9
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 10,
   "fields": {
+    "good": 10,
     "color": "black",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 10
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 11,
   "fields": {
+    "good": 11,
     "color": "brown",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 11
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 12,
   "fields": {
+    "good": 12,
     "color": "brown",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 12
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 13,
   "fields": {
+    "good": 13,
     "color": "blue",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 13
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 14,
   "fields": {
+    "good": 14,
     "color": "blue",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 14
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 15,
   "fields": {
+    "good": 15,
     "color": "grey",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 15
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 16,
   "fields": {
+    "good": 16,
     "color": "brown",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 16
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 17,
   "fields": {
+    "good": 17,
     "color": "black",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 17
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 18,
   "fields": {
+    "good": 18,
     "color": "brown",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 18
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 19,
   "fields": {
+    "good": 19,
     "color": "purple",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 19
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 20,
   "fields": {
+    "good": 20,
     "color": "black",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 20
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 21,
   "fields": {
+    "good": 21,
     "color": "white",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 21
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 22,
   "fields": {
+    "good": 22,
     "color": "white",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 22
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 23,
   "fields": {
+    "good": 23,
     "color": "black",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 23
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 24,
   "fields": {
+    "good": 24,
     "color": "black",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 24
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 25,
   "fields": {
+    "good": 25,
     "color": "black",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 25
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 26,
   "fields": {
+    "good": 26,
     "color": "black",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 26
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 27,
   "fields": {
+    "good": 27,
     "color": "black",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 27
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 28,
   "fields": {
+    "good": 28,
     "color": "black",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 28
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 29,
   "fields": {
+    "good": 29,
     "color": "black",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 29
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 30,
   "fields": {
+    "good": 30,
     "color": "red",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 30
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 31,
   "fields": {
+    "good": 31,
     "color": "black",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 31
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 32,
   "fields": {
+    "good": 32,
     "color": "black",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 32
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 33,
   "fields": {
+    "good": 33,
     "color": "black",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 33
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 34,
   "fields": {
+    "good": 34,
     "color": "black",
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 34
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 35,
   "fields": {
+    "good": 35,
     "color": null,
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 35
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 36,
   "fields": {
+    "good": 36,
     "color": null,
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 36
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 37,
   "fields": {
+    "good": 37,
     "color": null,
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 37
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 38,
   "fields": {
+    "good": 38,
     "color": null,
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 38
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 39,
   "fields": {
+    "good": 39,
     "color": null,
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 39
+    "height": null
   }
 },
 {
   "model": "ecomm.characteristic",
   "pk": 40,
   "fields": {
+    "good": 40,
     "color": null,
     "size": null,
     "length": null,
     "width": null,
-    "height": null,
-    "good": 40
+    "height": null
   }
 },
 {
@@ -3537,7 +3621,7 @@
     "photo": "",
     "phone": null,
     "birthday": null,
-    "gender": null,
+    "gender": "M",
     "country": null,
     "city": null,
     "address": null
@@ -3548,7 +3632,7 @@
   "pk": 2,
   "fields": {
     "user": 2,
-    "role": "C",
+    "role": null,
     "num_failed_logins": null,
     "photo": "",
     "phone": null,
@@ -3564,7 +3648,7 @@
   "pk": 3,
   "fields": {
     "user": 3,
-    "role": "C",
+    "role": null,
     "num_failed_logins": null,
     "photo": "",
     "phone": null,
@@ -3580,7 +3664,7 @@
   "pk": 4,
   "fields": {
     "user": 4,
-    "role": "C",
+    "role": null,
     "num_failed_logins": null,
     "photo": "",
     "phone": null,
@@ -3596,7 +3680,7 @@
   "pk": 5,
   "fields": {
     "user": 5,
-    "role": "S",
+    "role": null,
     "num_failed_logins": null,
     "photo": "",
     "phone": null,
@@ -4072,31 +4156,47 @@
   }
 },
 {
+  "model": "ecomm.customuser",
+  "pk": 35,
+  "fields": {
+    "user": 35,
+    "role": null,
+    "num_failed_logins": null,
+    "photo": "",
+    "phone": null,
+    "birthday": null,
+    "gender": "M",
+    "country": null,
+    "city": null,
+    "address": null
+  }
+},
+{
   "model": "ecomm.review",
   "pk": 1,
   "fields": {
+    "user": 2,
     "text": "Cool camera",
     "date": null,
-    "good": 1,
-    "user": 2
+    "good": 1
   }
 },
 {
   "model": "ecomm.review",
   "pk": 2,
   "fields": {
+    "user": 3,
     "text": "Camera allows make excellent photos!",
     "date": null,
-    "good": 1,
-    "user": 3
+    "good": 1
   }
 },
 {
   "model": "ecomm.customer",
   "pk": 1,
   "fields": {
-    "purchase_date": null,
     "customuser": 2,
+    "purchase_date": null,
     "goods": []
   }
 },
@@ -4104,8 +4204,8 @@
   "model": "ecomm.customer",
   "pk": 2,
   "fields": {
-    "purchase_date": null,
     "customuser": 3,
+    "purchase_date": null,
     "goods": [
       1
     ]
@@ -4115,261 +4215,261 @@
   "model": "ecomm.seller",
   "pk": 1,
   "fields": {
+    "customuser": 5,
     "company_name": "Leo&Co",
     "legal_entity": "Ltd",
     "manufacturer": "DiCaprioEnterprise",
-    "manufacturer_country": "USA",
-    "customuser": 5
+    "manufacturer_country": "USA"
   }
 },
 {
   "model": "ecomm.seller",
   "pk": 2,
   "fields": {
+    "customuser": 9,
     "company_name": "1",
     "legal_entity": "2",
     "manufacturer": "3",
-    "manufacturer_country": "4",
-    "customuser": 9
+    "manufacturer_country": "4"
   }
 },
 {
   "model": "ecomm.seller",
   "pk": 3,
   "fields": {
+    "customuser": 24,
     "company_name": "test_company1",
     "legal_entity": null,
     "manufacturer": null,
-    "manufacturer_country": null,
-    "customuser": 24
+    "manufacturer_country": null
   }
 },
 {
   "model": "ecomm.seller",
   "pk": 4,
   "fields": {
+    "customuser": 25,
     "company_name": "test_company2",
     "legal_entity": "Ltd",
     "manufacturer": "test_user2",
-    "manufacturer_country": "China",
-    "customuser": 25
+    "manufacturer_country": "China"
   }
 },
 {
   "model": "ecomm.seller",
   "pk": 5,
   "fields": {
+    "customuser": 21,
     "company_name": "custom14_company",
     "legal_entity": "Ltd",
     "manufacturer": "custom14",
-    "manufacturer_country": "Russia",
-    "customuser": 21
+    "manufacturer_country": "Russia"
   }
 },
 {
   "model": "ecomm.seller",
   "pk": 6,
   "fields": {
+    "customuser": 11,
     "company_name": "custom4_company",
     "legal_entity": "Ltd",
     "manufacturer": "custom4",
-    "manufacturer_country": "Russia",
-    "customuser": 11
+    "manufacturer_country": "Russia"
   }
 },
 {
   "model": "ecomm.seller",
   "pk": 7,
   "fields": {
+    "customuser": 26,
     "company_name": "test_company3",
     "legal_entity": "Ltd",
     "manufacturer": "test_user3",
-    "manufacturer_country": "Russia",
-    "customuser": 26
+    "manufacturer_country": "Russia"
   }
 },
 {
   "model": "ecomm.seller",
   "pk": 8,
   "fields": {
+    "customuser": 27,
     "company_name": "test_company4",
     "legal_entity": "Ltd",
     "manufacturer": "test_user4",
-    "manufacturer_country": "Russia",
-    "customuser": 27
+    "manufacturer_country": "Russia"
   }
 },
 {
   "model": "ecomm.seller",
   "pk": 9,
   "fields": {
+    "customuser": 28,
     "company_name": "test_company5",
     "legal_entity": "Ltd",
     "manufacturer": "test_user5",
-    "manufacturer_country": "Russia",
-    "customuser": 28
+    "manufacturer_country": "Russia"
   }
 },
 {
   "model": "ecomm.seller",
   "pk": 10,
   "fields": {
+    "customuser": 12,
     "company_name": "custom5_company",
     "legal_entity": "Ltd",
     "manufacturer": "custom5",
-    "manufacturer_country": "Russia",
-    "customuser": 12
+    "manufacturer_country": "Russia"
   }
 },
 {
   "model": "ecomm.seller",
   "pk": 11,
   "fields": {
+    "customuser": 30,
     "company_name": "test_company7",
     "legal_entity": "Ltd",
     "manufacturer": "test_user7",
-    "manufacturer_country": "Russia",
-    "customuser": 30
+    "manufacturer_country": "Russia"
   }
 },
 {
   "model": "ecomm.seller",
   "pk": 12,
   "fields": {
+    "customuser": 31,
     "company_name": "test_company8",
     "legal_entity": "Ltd",
     "manufacturer": "test_user8",
-    "manufacturer_country": "Russia",
-    "customuser": 31
+    "manufacturer_country": "Russia"
   }
 },
 {
   "model": "ecomm.seller",
   "pk": 13,
   "fields": {
+    "customuser": 32,
     "company_name": "test_company9",
     "legal_entity": "Ltd",
     "manufacturer": "test_user9",
-    "manufacturer_country": "Russia",
-    "customuser": 32
+    "manufacturer_country": "Russia"
   }
 },
 {
   "model": "ecomm.seller",
   "pk": 14,
   "fields": {
+    "customuser": 33,
     "company_name": "test_company10",
     "legal_entity": "Ltd",
     "manufacturer": "test_user10",
-    "manufacturer_country": "Russia",
-    "customuser": 33
+    "manufacturer_country": "Russia"
   }
 },
 {
   "model": "ecomm.seller",
   "pk": 15,
   "fields": {
+    "customuser": 34,
     "company_name": "test_company11",
     "legal_entity": "Ltd",
     "manufacturer": "test_user11",
-    "manufacturer_country": "Russia",
-    "customuser": 34
+    "manufacturer_country": "Russia"
   }
 },
 {
   "model": "ecomm.subscriber",
   "pk": 1,
   "fields": {
-    "is_subscribed": true,
-    "user": 9
+    "user": 9,
+    "is_subscribed": true
   }
 },
 {
   "model": "ecomm.subscriber",
   "pk": 2,
   "fields": {
-    "is_subscribed": true,
-    "user": 10
+    "user": 10,
+    "is_subscribed": true
   }
 },
 {
   "model": "ecomm.subscriber",
   "pk": 3,
   "fields": {
-    "is_subscribed": true,
-    "user": 14
+    "user": 14,
+    "is_subscribed": true
   }
 },
 {
   "model": "ecomm.subscriber",
   "pk": 4,
   "fields": {
-    "is_subscribed": true,
-    "user": 15
+    "user": 15,
+    "is_subscribed": true
   }
 },
 {
   "model": "ecomm.subscriber",
   "pk": 5,
   "fields": {
-    "is_subscribed": true,
-    "user": 16
+    "user": 16,
+    "is_subscribed": true
   }
 },
 {
   "model": "ecomm.subscriber",
   "pk": 6,
   "fields": {
-    "is_subscribed": true,
-    "user": 17
+    "user": 17,
+    "is_subscribed": true
   }
 },
 {
   "model": "ecomm.subscriber",
   "pk": 7,
   "fields": {
-    "is_subscribed": true,
-    "user": 19
+    "user": 19,
+    "is_subscribed": true
   }
 },
 {
   "model": "ecomm.subscriber",
   "pk": 8,
   "fields": {
-    "is_subscribed": true,
-    "user": 20
+    "user": 20,
+    "is_subscribed": true
   }
 },
 {
   "model": "ecomm.subscriber",
   "pk": 9,
   "fields": {
-    "is_subscribed": true,
-    "user": 21
+    "user": 21,
+    "is_subscribed": true
   }
 },
 {
   "model": "ecomm.subscriber",
   "pk": 10,
   "fields": {
-    "is_subscribed": true,
-    "user": 22
+    "user": 22,
+    "is_subscribed": true
   }
 },
 {
   "model": "ecomm.subscriber",
   "pk": 11,
   "fields": {
-    "is_subscribed": true,
-    "user": 23
+    "user": 23,
+    "is_subscribed": true
   }
 },
 {
   "model": "ecomm.subscriber",
   "pk": 12,
   "fields": {
-    "is_subscribed": true,
-    "user": 34
+    "user": 34,
+    "is_subscribed": true
   }
 },
 {
@@ -4603,6 +4703,16 @@
   }
 },
 {
+  "model": "account.emailaddress",
+  "pk": 24,
+  "fields": {
+    "user": 35,
+    "email": "nat09chenk@gmail.com",
+    "verified": false,
+    "primary": true
+  }
+},
+{
   "model": "socialaccount.socialapp",
   "pk": 1,
   "fields": {
@@ -4623,7 +4733,7 @@
     "user": 1,
     "provider": "google",
     "uid": "100091188946212747144",
-    "last_login": "2021-02-15T03:22:37.805Z",
+    "last_login": "2021-03-25T09:20:00.276Z",
     "date_joined": "2021-02-15T03:17:35.316Z",
     "extra_data": "{\"id\": \"100091188946212747144\", \"email\": \"shibelgut@gmail.com\", \"verified_email\": true, \"name\": \"Alexander Shibelgut\", \"given_name\": \"Alexander\", \"family_name\": \"Shibelgut\", \"picture\": \"https://lh6.googleusercontent.com/-f1KYAj9WKAo/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucl3WaIe_xAm47ObPO9C6ZC_x3ghTg/s96-c/photo.jpg\", \"locale\": \"ru\"}"
   }
@@ -4634,9 +4744,9 @@
   "fields": {
     "app": 1,
     "account": 1,
-    "token": "ya29.a0AfH6SMBvzXE6HJz1woMXB0w2SVIOIET7-sX0OF93FdBLzw-e4_zKlnAfXobyIquXL1uoCnMN3eG5a2oK67a2rlaNDC_tE17sIL0dqM_EgR12lrPH93Su8vjigOP5cfa5X-2BOmyYEkU0zqSBEMvolNtzqVm2tX7ScFFnoaUMzToK",
+    "token": "ya29.a0AfH6SMBENK5YDFmwsrE-2kM6WZMuBR9P1mg6dvMjOxv05ff571WnlbJOcOQpxbakC-njzQQOqdOvTMbZaljQReQttz2RolhXhrzU_11w9_CCylpmlcxu5G_BM2rKyaU4WB7dEX06_kLRzNTRKbxuRTPHpx1V",
     "token_secret": "",
-    "expires_at": "2021-02-15T04:22:36.422Z"
+    "expires_at": "2021-03-25T10:19:58.747Z"
   }
 },
 {
@@ -5047,7 +5157,7 @@
   "model": "django_celery_beat.periodictasks",
   "pk": 1,
   "fields": {
-    "last_update": "2021-02-20T07:27:55.574Z"
+    "last_update": "2021-03-23T14:26:02.149Z"
   }
 },
 {

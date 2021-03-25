@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -80,8 +81,7 @@ class Good(models.Model):
                                    blank=False, db_index=True)
     pub_date = models.DateTimeField(auto_now_add=True, null=True,
                                     verbose_name='Дата опубликования', db_index=True)
-    tag = models.ForeignKey('Tag', on_delete=models.CASCADE, related_name='goods',
-                            verbose_name='Тэг')
+    tag = ArrayField(models.CharField(max_length=150), size=10, blank=True, verbose_name='Тэги')
     seller = models.ForeignKey('Seller', on_delete=models.CASCADE, related_name='goods',
                                blank=True, verbose_name='Продавец')
     # is_available = models.BooleanField(default=False, verbose_name='Наличие товара',
